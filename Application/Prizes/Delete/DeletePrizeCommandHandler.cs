@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.Prizes.Delete;
-using Domain.Entities;
 using Domain.Primitives;
 using MediatR;
 
@@ -12,9 +11,11 @@ public class DeletePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
 
         if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound",$"Не найден объект с id {command.Id}"));
+        if (prize.IsDeleted) return Result<bool>.Failure(Error.Conflict("Prize.Conflict", $"Данный объект уже помечен как удаленный"));
 
         // Мягкое удаление
         prize.IsDeleted = true;
+        prize.DeletedAt = DateTime.UtcNow;
 
         await prizeRepository.UpdateAsync(prize, ct);
 
