@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions;
-using Application.Users.Login;
 using Domain.Entities;
 using Domain.Primitives;
 using MediatR;
