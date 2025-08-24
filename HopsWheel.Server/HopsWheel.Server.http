@@ -1,6 +1,0 @@
-@HopsWheel.Server_HostAddress = http://localhost:5124
-
-GET {{HopsWheel.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
