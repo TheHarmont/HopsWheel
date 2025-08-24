@@ -1,9 +1,12 @@
-﻿using Application.Prizes.Delete;
+﻿using Application.Prizes.Create;
+using Application.Prizes.Delete;
+using Application.Prizes.Update;
 using Domain.Primitives;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Api.Extensions;
 using Web.Api.Tools;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Web.Api.Controllers;
 
@@ -12,22 +15,23 @@ namespace Web.Api.Controllers;
 [Authorize]
 public class PrizeController : BaseController
 {
-    [HttpGet("Add")]
-    [Authorize(Roles = "barmen")]
-    public async Task<IResult> Create()
+    [HttpPost("Add")]
+    public async Task<IResult> Create(CreatePrizeCommand command, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        Result<Guid> result = await Mediator.Send(command, ct);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpGet("Update")]
-    [Authorize(Roles = "barmen")]
-    public async Task<IResult> Update()
+    [HttpPut("Update")]
+    public async Task<IResult> Update(UpdatePrizeCommand command, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        Result result = await Mediator.Send(command, ct);
+
+        return result.Match(Results.NoContent, CustomResults.Problem);
     }
 
-    [HttpGet("Delete")]
-    [Authorize(Roles = "barmen")]
+    [HttpDelete("Delete")]
     public async Task<IResult> Delete(DeletePrizeCommand command, CancellationToken ct = default)
     {
         Result result = await Mediator.Send(command, ct);
