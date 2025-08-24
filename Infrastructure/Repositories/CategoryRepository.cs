@@ -4,7 +4,6 @@ using Domain.Entities;
 using Infrastructure.Context;
 
 namespace Infrastructure.Repositories;
-
-public class UserRepository(ApplicationDbContext context) : RepositoryBase<User, ApplicationDbContext>(context), IUserRepository
+public class CategoryRepository(ApplicationDbContext context) : RepositoryBase<Category, ApplicationDbContext>(context), ICategoryRepository
 {
 }

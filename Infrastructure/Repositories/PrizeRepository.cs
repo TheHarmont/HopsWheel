@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Core.Infrastructure.Repositories;
 using Domain.Entities;
-using Infrastructure.Database.Context;
+using Infrastructure.Context;
 
 namespace Infrastructure.Repositories;
 public class PrizeRepository(ApplicationDbContext context) : RepositoryBase<Prize, ApplicationDbContext>(context), IPrizeRepository
