@@ -7,14 +7,24 @@ using MediatR;
 namespace Application.Prizes.Create;
 public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequestHandler<UpdatePrizeCommand, Result>
 {
-    public async Task<Result> Handle(DeletePrizeCommand command, CancellationToken ct = default)
+    public async Task<Result> Handle(UpdatePrizeCommand command, CancellationToken ct = default)
     {
-        var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
+        UpdatePrizeCommandValidator validator = new();
+        var validationResult = validator.Validate(command);
+        if (!validationResult.IsValid)
+        {
+            return Result<Guid>.Failure<Guid>(Error.Validation("Prize.Validation", validationResult.Errors[0]?.ErrorMessage ?? "Ошибка валидации!"));
+        }
 
+        var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
         if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound",$"Не найден объект с id {command.Id}"));
 
-        // Мягкое удаление
-        prize.IsDeleted = true;
+        prize.Name = command.Name;
+        prize.CategoryId = command.CategoryId;
+        prize.Weight = command.Weight;
+        prize.IsActive = command.IsActive;
+        prize.MaxUses = command.MaxUses;
+        prize.UpdatedAt = DateTime.UtcNow;
 
         await prizeRepository.UpdateAsync(prize, ct);
 
