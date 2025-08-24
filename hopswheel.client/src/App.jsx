@@ -39,7 +39,7 @@ function App() {
         </div>
     );
     
-    async function populateWeatherData() {
+    async function populateWeaherData() {
         const response = await fetch('weatherforecast');
         if (response.ok) {
             const data = await response.json();
