@@ -15,11 +15,11 @@ internal sealed class LoginUserCommandHandler(
         User? user = await userRepository
             .Query()
             .AsNoTracking()
-            .SingleOrDefaultAsync(u => u.UserName == command.UserName, cancellationToken);
+            .SingleOrDefaultAsync(u => u.UserNameNormalize == command.UserName.ToUpper(), cancellationToken);
 
         if (user is null)
         {
-            return Result<string>.Failure<string>(Error.NotFound("User.NotFount", "Не найден пользователь с таким имененм!"));
+            return Result<string>.Failure<string>(Error.NotFound("User.NotFount", "Не найден пользователь с таким именем!"));
         }
 
         bool verified = passwordHasher.Verify(command.Password, user.PasswordHash);

@@ -11,4 +11,8 @@
     <None Remove="Entities\zvwyvlsm.onv~" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Infrastructure\Core.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

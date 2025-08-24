@@ -17,7 +17,7 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
             return Result<Guid>.Failure<Guid>(Error.Validation("User.Validation", validationResult.Errors[0]?.ErrorMessage ?? "Ошибка валидации"));
         }
 
-        if (await userRepository.Query().AnyAsync(u => u.UserName == command.UserName, cancellationToken))
+        if (await userRepository.Query().AnyAsync(u => u.UserNameNormalize == command.UserName.ToUpper(), cancellationToken))
         {
             return Result<Guid>.Failure<Guid>(Error.Conflict("User.Conflict", "Пользователь с таким имененм уже существет!"));
         }
@@ -26,6 +26,7 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
         {
             Id = Guid.NewGuid(),
             UserName = command.UserName,
+            UserNameNormalize = command.UserName.ToUpper(),
             Role = command.Role,
             PasswordHash = passwordHasher.Hash(command.Password)
         };

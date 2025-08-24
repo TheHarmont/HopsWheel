@@ -1,16 +1,15 @@
 ﻿using Application.Abstractions;
-using Application.Prizes.Delete;
 using Domain.Primitives;
 using MediatR;
 
-namespace Application.Prizes.Create;
+namespace Application.Prizes.Delete;
 public class DeletePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequestHandler<DeletePrizeCommand, Result>
 {
     public async Task<Result> Handle(DeletePrizeCommand command, CancellationToken ct = default)
     {
         var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
 
-        if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound",$"Не найден объект с id {command.Id}"));
+        if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound", $"Не найден объект с id {command.Id}"));
         if (prize.IsDeleted) return Result<bool>.Failure(Error.Conflict("Prize.Conflict", $"Данный объект уже помечен как удаленный"));
 
         // Мягкое удаление

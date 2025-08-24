@@ -2,6 +2,8 @@
 using Domain.Entities;
 using Domain.Primitives;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Application.Prizes.Create;
 public class CreatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequestHandler<CreatePrizeCommand, Result<Guid>>
@@ -19,6 +21,7 @@ public class CreatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         {
             Id = Guid.NewGuid(),
             Name = command.Name,
+            NameNormalize = command.Name.ToUpper(),
             CategoryId = command.CategoryId,
             Weight = command.Weight,
             IsActive = command.IsActive,

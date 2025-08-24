@@ -1,10 +1,9 @@
 ﻿using Application.Abstractions;
-using Application.Prizes.Delete;
 using Domain.Entities;
 using Domain.Primitives;
 using MediatR;
 
-namespace Application.Prizes.Create;
+namespace Application.Prizes.Update;
 public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequestHandler<UpdatePrizeCommand, Result>
 {
     public async Task<Result> Handle(UpdatePrizeCommand command, CancellationToken ct = default)
@@ -17,9 +16,10 @@ public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         }
 
         var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
-        if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound",$"Не найден объект с id {command.Id}"));
+        if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound", $"Не найден приз с id {command.Id}"));
 
         prize.Name = command.Name;
+        prize.NameNormalize = command.Name.ToUpper();
         prize.CategoryId = command.CategoryId;
         prize.Weight = command.Weight;
         prize.IsActive = command.IsActive;
