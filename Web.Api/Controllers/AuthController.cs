@@ -1,10 +1,6 @@
 ﻿using Application.Users.Login;
-using Application.Users.Register;
 using Domain.Primitives;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 using Web.Api.Extensions;
 using Web.Api.Tools;
 
