@@ -1,5 +1,6 @@
 ﻿using Application.Users.Create;
 using Application.Users.GetAll;
+using Application.Users.GetById;
 using Application.Users.Login;
 using Domain.Entities;
 using Domain.Primitives;
@@ -21,6 +22,16 @@ public class UserController : BaseController
     public async Task<IResult> GetAll(CancellationToken ct = default)
     {
         Result<List<GetAllUserQueryDto>> result = await Mediator.Send(new GetAllUserQuery(), ct);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
+    }
+
+    [HttpGet("GetById")]
+    public async Task<IResult> GetById(Guid Id, CancellationToken ct = default)
+    {
+        Result<GetByIdUserQueryDto> result = await Mediator.Send(new GetByIdUserQuery() {
+            Id = Id
+        }, ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }
