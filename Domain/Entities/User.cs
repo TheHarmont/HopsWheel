@@ -10,6 +10,6 @@ public sealed class User : Entity
     public string UserName { get; set; }
     public string UserNameNormalize { get; set; }
     public Role Role { get; set; }
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; }
     public string PasswordHash { get; set; }
 }
