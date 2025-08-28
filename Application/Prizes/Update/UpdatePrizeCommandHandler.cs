@@ -12,15 +12,13 @@ public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         var validationResult = validator.Validate(command);
         if (!validationResult.IsValid)
         {
-            return Result<Guid>.Failure<Guid>(Error.Validation("Prize.Validation", validationResult.Errors[0]?.ErrorMessage ?? "Ошибка валидации!"));
+            return Result.Failure<Guid>(Error.Validation("Prize.Validation", validationResult.Errors[0]?.ErrorMessage ?? "Ошибка валидации!"));
         }
 
         var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
-        if (prize == null) return Result<bool>.Failure(Error.NotFound("Prize.NotFound", $"Не найден приз с id {command.Id}"));
+        if (prize == null) return Result.Failure(Error.NotFound("Prize.NotFound", $"Не найден приз с id {command.Id}"));
 
         prize.Name = command.Name;
-        prize.NameNormalize = command.Name.ToUpper();
-        prize.CategoryId = command.CategoryId;
         prize.Weight = command.Weight;
         prize.IsActive = command.IsActive;
         prize.MaxUses = command.MaxUses;
@@ -28,6 +26,6 @@ public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
 
         await prizeRepository.UpdateAsync(prize, ct);
 
-        return Result<Guid>.Success(prize.Id);
+        return Result.Success(prize.Id);
     }
 }

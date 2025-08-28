@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Users.Register;
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+namespace Application.Users.Create;
+public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public RegisterUserCommandValidator()
+    public CreateUserCommandValidator()
     {
         RuleFor(u => u.Password)
             .MinimumLength(5)

@@ -10,27 +10,27 @@ internal sealed class LoginUserCommandHandler(
     IPasswordHasher passwordHasher,
     ITokenProvider tokenProvider) : IRequestHandler<LoginUserCommand, Result<string>>
 {
-    public async Task<Result<string>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(LoginUserCommand command, CancellationToken ct = default)
     {
         User? user = await userRepository
             .Query()
             .AsNoTracking()
-            .SingleOrDefaultAsync(u => u.UserNameNormalize == command.UserName.ToUpper(), cancellationToken);
+            .SingleOrDefaultAsync(u => u.UserNameNormalize == command.UserName.ToUpper(), ct);
 
         if (user is null)
         {
-            return Result<string>.Failure<string>(Error.NotFound("User.NotFount", "Не найден пользователь с таким именем!"));
+            return Result.Failure<string>(Error.NotFound("User.NotFount", "Не найден пользователь с таким именем!"));
         }
 
         bool verified = passwordHasher.Verify(command.Password, user.PasswordHash);
 
         if (!verified)
         {
-            return Result<string>.Failure<string>(Error.Failure("User.Failure", "Неверный логин или пароль!"));
+            return Result.Failure<string>(Error.Failure("User.Failure", "Неверный логин или пароль!"));
         }
 
         string token = tokenProvider.Create(user);
 
-        return Result<string>.Success(token);
+        return Result.Success(token);
     }
 }

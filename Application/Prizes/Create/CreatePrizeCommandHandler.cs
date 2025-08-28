@@ -14,15 +14,13 @@ public class CreatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         var validationResult = validator.Validate(command);
         if (!validationResult.IsValid)
         {
-            return Result<Guid>.Failure<Guid>(Error.Validation("Prize.Validation", validationResult.Errors[0]?.ErrorMessage ?? "Ошибка валидации!"));
+            return Result.Failure<Guid>(Error.Validation("Prize.Validation", validationResult.Errors[0]?.ErrorMessage ?? "Ошибка валидации!"));
         }
 
         Prize prize = new()
         {
             Id = Guid.NewGuid(),
             Name = command.Name,
-            NameNormalize = command.Name.ToUpper(),
-            CategoryId = command.CategoryId,
             Weight = command.Weight,
             IsActive = command.IsActive,
             MaxUses = command.MaxUses
@@ -30,6 +28,6 @@ public class CreatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
 
         await prizeRepository.AddAsync(prize, ct);
 
-        return Result<Guid>.Success(prize.Id);
+        return Result.Success(prize.Id);
     }
 }
