@@ -31,7 +31,6 @@ public static class DependencyInjection
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPrizeRepository, PrizeRepository>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return services;
     }
@@ -68,6 +67,18 @@ public static class DependencyInjection
                     RoleClaimType = ClaimTypes.Role
                 };
             });
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("FrontendPolicy", policy =>
+            {
+                var origins = configuration.GetSection("AllowedOrigins").Get<string[]>();
+                policy.WithOrigins(origins!)
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
 
         services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
