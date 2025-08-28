@@ -14,15 +14,6 @@ namespace Web.Api.Controllers;
 [ApiController]
 public class AuthController : BaseController
 {
-    [HttpPost("Register")]
-    [Authorize(Roles = "admin")]
-    public async Task<IResult> Register(RegisterUserCommand command, CancellationToken ct = default)
-    {
-        Result<Guid> result = await Mediator.Send(command, ct);
-
-        return result.Match(Results.Ok, CustomResults.Problem);
-    }
-
     [HttpPost("Login")]
     public async Task<IResult> Login(LoginUserCommand command, CancellationToken ct = default)
     {

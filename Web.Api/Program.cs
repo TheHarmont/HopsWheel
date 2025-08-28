@@ -27,4 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors("FrontendPolicy");
+
 app.Run();
