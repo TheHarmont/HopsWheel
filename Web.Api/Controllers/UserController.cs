@@ -2,6 +2,7 @@
 using Application.Users.GetAll;
 using Application.Users.GetById;
 using Application.Users.Login;
+using Application.Users.Update;
 using Domain.Entities;
 using Domain.Primitives;
 using MediatR;
@@ -37,7 +38,6 @@ public class UserController : BaseController
     }
 
     [HttpPost("Create")]
-    [Authorize]
     public async Task<IResult> Create(CreateUserCommand command, CancellationToken ct = default)
     {
         Result result = await Mediator.Send(command, ct);
@@ -46,8 +46,7 @@ public class UserController : BaseController
     }
 
     [HttpPut("Update")]
-    [Authorize]
-    public async Task<IResult> Update(CreateUserCommand command, CancellationToken ct = default)
+    public async Task<IResult> Update(UpdateUserCommand command, CancellationToken ct = default)
     {
         Result result = await Mediator.Send(command, ct);
 
