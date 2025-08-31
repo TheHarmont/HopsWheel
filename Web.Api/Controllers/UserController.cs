@@ -1,21 +1,17 @@
 ﻿using Application.Users.Create;
 using Application.Users.GetAll;
 using Application.Users.GetById;
-using Application.Users.Login;
 using Application.Users.Update;
-using Domain.Entities;
 using Domain.Primitives;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 using Web.Api.Extensions;
 using Web.Api.Tools;
 
 namespace Web.Api.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "admin")]
 [ApiController]
 public class UserController : BaseController
 {
