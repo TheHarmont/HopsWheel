@@ -26,7 +26,7 @@ internal sealed class LoginUserCommandHandler(
 
         if (!verified)
         {
-            return Result.Failure<string>(Error.Failure("User.Failure", "Неверный логин или пароль!"));
+            return Result.Failure<string>(Error.Problem("User.Problem", "Неверный логин или пароль!"));
         }
 
         string token = tokenProvider.Create(user);
