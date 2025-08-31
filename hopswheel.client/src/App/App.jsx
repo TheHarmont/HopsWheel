@@ -35,7 +35,7 @@ const App = () => {
                 <Route
                     path="/user"
                     element={
-                        <PrivateRoute requiredRole="barmen">
+                        <PrivateRoute requiredRole={["admin","barmen"]}>
                             <UserPage />
                         </PrivateRoute>
                     }
@@ -44,7 +44,7 @@ const App = () => {
                 <Route
                     path="/users"
                     element={
-                        <PrivateRoute requiredRole="barmen">
+                        <PrivateRoute requiredRole="admin">
                             <UserListPage />
                         </PrivateRoute>
                     }
