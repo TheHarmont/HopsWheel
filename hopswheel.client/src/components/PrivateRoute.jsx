@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { isAuthenticated, hasRole } from '../utils/auth';
+import { hasRole } from '../utils/usersAuth';
+import { isAuthenticated }  from '../services/auth.service';
 
 const PrivateRoute = ({ children, requiredRole }) => {
     if (!isAuthenticated()) {

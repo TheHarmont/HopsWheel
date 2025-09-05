@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import userApi from '../../services/userApi';
+import userApi from '../../services/user.service';
 
 const UserForm = ({ userId, onSuccess }) => {
     const [formData, setFormData] = useState({

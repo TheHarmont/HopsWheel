@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { isAuthenticated, isAdmin } from '../utils/auth';
-import authService from '../services/authService';
+import { logout, getCurrentUser, isAuthenticated } from '../services/auth.service';
 
 import "./Navbar.css"
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const user = authService.getCurrentUser();
+    const user = getCurrentUser();
     const [isOpen, setIsOpen] = useState(false);
-
-    const isAuthenticated = () => {
-        // Убедимся, что функция определена
-        return !!authService.getCurrentUser();
-    };
 
     const handleLogout = () => {
         setIsOpen(false);
-        authService.logout();
+        logout();
         navigate('/login');
     };
 

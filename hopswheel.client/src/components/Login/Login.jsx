@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authService from '../../services/authService';
-
+import { login } from '../../services/auth.service';
 import "./Login.css"
 
 const Login = () => {
@@ -15,7 +14,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await authService.login(username, password);
+            await login(username, password);
             navigate('/');
         } catch (err) {
             setError(err.response?.data.detail ?? 'Неверный логин или пароль!');
