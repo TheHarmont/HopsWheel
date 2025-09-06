@@ -1,25 +1,23 @@
 import React from 'react';
+import "./UserItem.css";
 
 const UserItem = ({ user, onEdit }) => {
     return (
-        <div
-            style={{
-                border: '1px solid #ddd',
-                padding: '10px',
-                marginBottom: '8px',
-                borderRadius: '4px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            }}
-        >
-            <div>
-                <strong>{user.userName}</strong> | Роль: {user.role} |{' '}
-                <span style={{ color: user.isActive ? 'green' : 'red' }}>
-                    {user.isActive ? 'Активен' : 'Неактивен'}
-                </span>
+        <div className="user-card">
+            <div className="user-info">
+                <h4 className="user-name">{user.userName}</h4>
+                <div className="user-role">Роль: <span>{user.role === 'barmen' ? 'Бармен' : user.role}</span></div>
+                <div className={`user-status ${user.isActive ? 'active' : 'inactive'}`}>
+                    {user.isActive ? '🟢 Активен' : '🔴 Неактивен'}
+                </div>
             </div>
-            <button onClick={() => onEdit(user.id)}>Редактировать</button>
+            <button
+                className="btn-edit"
+                onClick={() => onEdit(user.id)}
+                aria-label={`Редактировать ${user.userName}`}
+            >
+                ✏️ Редактировать
+            </button>
         </div>
     );
 };

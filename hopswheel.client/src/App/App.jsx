@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from '../pages/LoginPage';
 import WheelPage from '../pages/WheelPage';
-import UserPage from '../pages/UserPage';
+import PrizeListPage from '../pages/PrizeListPage';
 import UserListPage from '../pages/UserListPage';
 import PrivateRoute from '../components/PrivateRoute';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 
 const App = () => {
     return (
@@ -24,10 +24,10 @@ const App = () => {
                 />
 
                 <Route
-                    path="/user"
+                    path="/prizes"
                     element={
                         <PrivateRoute requiredRole={["admin","barmen"]}>
-                            <UserPage />
+                            <PrizeListPage />
                         </PrivateRoute>
                     }
                 />

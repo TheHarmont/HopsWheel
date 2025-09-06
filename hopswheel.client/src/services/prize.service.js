@@ -1,14 +1,8 @@
 import { createInstance } from '../services/auth.service';
 
-const API_URL = 'https://localhost:8001/api/User'; 
+const API_URL = 'https://localhost:8001/api/Prize';
 
-const userService = {
-    getAllRoles: async () => {
-        const axios = createInstance(API_URL);
-        const response = await axios.get(`/GetAllRoles`);
-        return response.data;
-    },
-
+const prizeService = {
     getAll: async () => {
         const axios = createInstance(API_URL);
         const response = await axios.get(`/GetAll`);
@@ -34,4 +28,4 @@ const userService = {
     },
 };
 
-export default userService;
+export default prizeService;

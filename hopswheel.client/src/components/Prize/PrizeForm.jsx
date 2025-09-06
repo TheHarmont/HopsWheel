@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import userApi from '../../services/user.service';
+import prizeApi from '../../services/prize.service';
 
-const UserForm = ({ userId, onSuccess }) => {
+const PrizeForm = ({ prizeId, onSuccess }) => {
     const [formData, setFormData] = useState({
-        userName: '',
-        password: '',
-        role: 'barmen', // значение по умолчанию
+        name: '',
+        weight: 10,
+        maxUses: 0,
         isActive: true,
     });
 
@@ -14,24 +14,24 @@ const UserForm = ({ userId, onSuccess }) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (userId) {
+        if (prizeId) {
             setIsEditing(true);
-            fetchUser(userId);
+            fetchUser(prizeId);
         }
-    }, [userId]);
+    }, [prizeId]);
 
     const fetchUser = async (id) => {
         try {
             setLoading(true);
-            const data = await userApi.getById(id);
+            const data = await prizeApi.getById(id);
             setFormData({
-                userName: data.userName,
-                password: '', // пароль не возвращается при GET
-                role: data.role,
+                name: data.name,
+                weight: data.weight,
+                maxUses: data.maxUses,
                 isActive: data.isActive,
             });
         } catch (err) {
-            setError('Не удалось загрузить пользователя');
+            setError('Не удалось загрузить приз');
             console.error(err);
         } finally {
             setLoading(false);
@@ -51,18 +51,19 @@ const UserForm = ({ userId, onSuccess }) => {
         setError('');
 
         const payload = {
-            userName: formData.userName,
-            password: formData.password,
-            role: formData.role,
+            name: formData.name,
+            weight: formData.weight,
+            maxUses: formData.maxUses,
+            isActive: formData.isActive,
         };
 
         try {
             setLoading(true);
             if (isEditing) {
                 // При обновлении добавляем Id
-                await userApi.update({ ...payload, id: userId });
+                await prizeApi.update({ ...payload, id: prizeId });
             } else {
-                await userApi.create(payload);
+                await prizeApi.create(payload);
             }
             onSuccess(); // Успешно — обновить список
         } catch (err) {
@@ -77,16 +78,16 @@ const UserForm = ({ userId, onSuccess }) => {
 
     return (
         <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
-            <h3>{isEditing ? 'Редактировать пользователя' : 'Создать пользователя'}</h3>
+            <h3>{isEditing ? 'Редактировать приз' : 'Создать приз'}</h3>
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
             <div style={{ marginBottom: '10px' }}>
                 <label>
-                    Имя пользователя:
+                    Название:
                     <input
                         type="text"
-                        name="userName"
-                        value={formData.userName}
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
                         required
                         style={{ marginLeft: '10px' }}
@@ -94,28 +95,31 @@ const UserForm = ({ userId, onSuccess }) => {
                 </label>
             </div>
 
-            {!isEditing && (
-                <div style={{ marginBottom: '10px' }}>
-                    <label>
-                        Пароль:
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required={!isEditing}
-                            style={{ marginLeft: '10px' }}
-                        />
-                    </label>
-                </div>
-            )}
+            <div style={{ marginBottom: '10px' }}>
+                <label>
+                    Название:
+                    <input
+                        type="text"
+                        name="weight"
+                        value={formData.weight}
+                        onChange={handleChange}
+                        required
+                        style={{ marginLeft: '10px' }}
+                    />
+                </label>
+            </div>
 
             <div style={{ marginBottom: '10px' }}>
                 <label>
-                    Роль:
-                    <select name="role" value={formData.role} onChange={handleChange} style={{ marginLeft: '10px' }}>
-                        <option value="barmen">Barmen</option>
-                    </select>
+                    Название:
+                    <input
+                        type="text"
+                        name="maxUses"
+                        value={formData.maxUses}
+                        onChange={handleChange}
+                        required
+                        style={{ marginLeft: '10px' }}
+                    />
                 </label>
             </div>
 
@@ -141,4 +145,4 @@ const UserForm = ({ userId, onSuccess }) => {
     );
 };
 
-export default UserForm;
+export default PrizeForm;

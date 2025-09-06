@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/auth.service';
-import "./Login.css"
+import "./Login.css";
 
 const Login = () => {
     const barName = "Рыжая Сова";
@@ -22,36 +22,50 @@ const Login = () => {
     };
 
     return (
-        <div className="login-sheet">
-            <h2>{barName}</h2>
-            <div className = "error-group">
-                {error && (<p className = "error-message">{error}</p>)}
+        <div className="login-container">
+            <div className="login-card">
+                <h1 className="bar-title">🦉 {barName}</h1>
+                <p className="subtitle">Ты знаешь что делать</p>
+
+                {error && (
+                    <div className="error-alert">
+                        <span>⚠️</span> {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="login-form">
+                    <div className="input-group">
+                        <label htmlFor="username">Логин</label>
+                        <input
+                            id="username"
+                            type="text"
+                            placeholder="Ваше имя..."
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            autoComplete="username"
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="password">Пароль</label>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            autoComplete="current-password"
+                        />
+                    </div>
+
+                    <button type="submit" className="btn-login">
+                        <span>Войти</span>
+                        <span className="btn-icon">→</span>
+                    </button>
+                </form>
             </div>
-            <form onSubmit={handleSubmit}>
-                <div className= "input-group">
-                    <label>Логин:</label>
-                    <input
-                        type="text"
-                        placeholder="Имя..."
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        className="LoginInput"
-                    />
-                </div>
-                <div className="input-group">
-                    <label>Пароль:</label>
-                    <input
-                        type="password"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="LoginInput"
-                    />
-                </div>
-                <button type="submit" className="submit-line-button">Войти</button>
-            </form>
         </div>
     );
 };
