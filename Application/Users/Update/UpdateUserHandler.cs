@@ -28,6 +28,7 @@ internal sealed class UpdateUserCommandHandler(IUserRepository userRepository)
 
         user.UserName = command.UserName;
         user.UserNameNormalize = command.UserName.ToUpper();
+        user.Role = command.Role;
         user.IsActive = command.IsActive;
 
         await userRepository.UpdateAsync(user, ct);
