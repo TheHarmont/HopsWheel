@@ -1,4 +1,5 @@
-﻿using Application.Users.Create;
+﻿using Application.Roles.GetAll;
+using Application.Users.Create;
 using Application.Users.GetAll;
 using Application.Users.GetById;
 using Application.Users.Update;
@@ -18,7 +19,7 @@ public class UserController : BaseController
     [HttpGet("GetAll")]
     public async Task<IResult> GetAll(CancellationToken ct = default)
     {
-        Result<List<GetAllUserQueryDto>> result = await Mediator.Send(new GetAllUserQuery(), ct);
+        Result<List<GetAllUsersQueryDto>> result = await Mediator.Send(new GetAllUsersQuery(), ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }
@@ -29,6 +30,14 @@ public class UserController : BaseController
         Result<GetByIdUserQueryDto> result = await Mediator.Send(new GetByIdUserQuery() {
             Id = Id
         }, ct);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
+    }
+
+    [HttpGet("GetAllRoles")]
+    public async Task<IResult> GetAllRoles(CancellationToken ct = default)
+    {
+        Result<string[]> result = await Mediator.Send(new GetAllRolesQuery(), ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }
