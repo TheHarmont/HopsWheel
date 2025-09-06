@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 
 namespace Application.Users.GetAll;
-public class GetAllUserQueryDto
+public class GetAllUsersQueryDto
 {
     public Guid Id { get; set; }
     public string UserName { get; set; }

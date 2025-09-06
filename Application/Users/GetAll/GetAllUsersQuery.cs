@@ -3,6 +3,6 @@ using Domain.Primitives;
 using MediatR;
 
 namespace Application.Users.GetAll;
-public sealed record GetAllUserQuery : IRequest<Result<List<GetAllUserQueryDto>>>
+public sealed record GetAllUsersQuery : IRequest<Result<List<GetAllUsersQueryDto>>>
 {
 }

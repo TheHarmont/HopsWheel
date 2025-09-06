@@ -5,15 +5,15 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Users.GetAll;
-internal sealed class GetAllUserQueryHandler(
-    IUserRepository userRepository) : IRequestHandler<GetAllUserQuery, Result<List<GetAllUserQueryDto>>>
+internal sealed class GetAllUsersQueryHandler(
+    IUserRepository userRepository) : IRequestHandler<GetAllUsersQuery, Result<List<GetAllUsersQueryDto>>>
 {
-    public async Task<Result<List<GetAllUserQueryDto>>> Handle(GetAllUserQuery query, CancellationToken ct = default)
+    public async Task<Result<List<GetAllUsersQueryDto>>> Handle(GetAllUsersQuery query, CancellationToken ct = default)
     {
         var users = await userRepository
             .Query()
             .AsNoTracking()
-            .Select(u => new GetAllUserQueryDto()
+            .Select(u => new GetAllUsersQueryDto()
             {
                 Id = u.Id,
                 UserName = u.UserName,
