@@ -1,5 +1,7 @@
 ﻿using Application.Prizes.Create;
 using Application.Prizes.Delete;
+using Application.Prizes.GetAll;
+using Application.Prizes.GetById;
 using Application.Prizes.Update;
 using Domain.Primitives;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +17,22 @@ namespace Web.Api.Controllers;
 [Authorize]
 public class PrizeController : BaseController
 {
+    [HttpGet("GetAll")]
+    public async Task<IResult> GetAll(CancellationToken ct = default)
+    {
+        Result<List<GetAllPrizesQueryDto>> result = await Mediator.Send(new GetAllPrizesQuery(), ct);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
+    }
+
+    [HttpGet("GetById")]
+    public async Task<IResult> GetById(GetByIdPrizeQuery command, CancellationToken ct = default)
+    {
+        Result<GetByIdPrizeQueryDto> result = await Mediator.Send(command, ct);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
+    }
+
     [HttpPost("Add")]
     public async Task<IResult> Create(CreatePrizeCommand command, CancellationToken ct = default)
     {
