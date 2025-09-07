@@ -1,4 +1,4 @@
-.user-form {
+.prize-form {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 16px;
@@ -175,7 +175,7 @@
 
 /* Адаптивность */
 @media (max-width: 600px) {
-    .user-form {
+    .prize-form {
         padding: 20px;
         margin: 15px;
     }

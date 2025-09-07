@@ -1,27 +1,39 @@
 import React from 'react';
+import "./PrizeItem.css";
 
 const PrizeItem = ({ prize, onEdit }) => {
     return (
-        <div
-            style={{
-                border: '1px solid #ddd',
-                padding: '10px',
-                marginBottom: '8px',
-                borderRadius: '4px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            }}
-        >
-            <div>
-                <strong>{prize.name}</strong> |{' '}
-                <span style={{ color: prize.isActive ? 'green' : 'red' }}>
-                    {prize.isActive ? 'Активен' : 'Неактивен'}
-                </span>
-                <p>{prize.weight}</p>
-                <p>{prize.maxUses}</p>
+        <div className="prize-card">
+            <div className="prize-info">
+                <h4 className="prize-name">{prize.name}</h4>
+                <div className="prize-meta">
+                    <div className={`prize-status ${prize.isActive ? 'active' : 'inactive'}`}>
+                        {prize.isActive ? '🟢 Активен' : '🔴 Неактивен'}
+                    </div>
+                    <div className="prize-drop-chance">
+                        <span className="label">Шанс падения:</span> <span className="value">{prize.weight}</span>
+                    </div>
+                    <div className="prize-drop-count">
+                        <span className="label">Количество падений:</span> <span className="value">{prize.maxUses === 0 ? '∞' : prize.maxUses}</span>
+                    </div>
+                </div>
             </div>
-            <button onClick={() => onEdit(prize.id)}>Редактировать</button>
+            <div className="prize-actions">
+                <button
+                    className="btn-edit"
+                    onClick={() => onEdit(prize.id)}
+                    aria-label={`Редактировать ${prize.name}`}
+                >
+                    ✏️ Редактировать
+                </button>
+                <button
+                    className="btn-delete"
+                    onClick={() => onDelete(prize.id)} // ← добавь обработчик в пропсы
+                    aria-label={`Удалить ${prize.name}`}
+                >
+                    🗑️ Удалить
+                </button>
+            </div>
         </div>
     );
 };

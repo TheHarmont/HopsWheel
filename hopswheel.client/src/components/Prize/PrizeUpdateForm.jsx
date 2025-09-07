@@ -1,38 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import userApi from '../../services/user.service';
-import "./UserForm.css";
+import prizeApi from '../../services/prize.service';
+import "./PrizeForm.css";
 
-const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
+const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
     const [formData, setFormData] = useState({
-        userName: '',
-        role: 'barmen',
-        isActive: true,
+        name: '',
+        weight: 10,
+        maxUses: 0,
+        isActive: true
     });
 
-    const [roles, setRoles] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (userId) {
-            fetchUser(userId);
+        if (prizeId) {
+            fetchPrize(prizeId);
         }
-    }, [userId]);
+    }, [prizeId]);
 
-    const fetchUser = async (id) => {
+    const fetchPrize = async (id) => {
         try {
             setLoading(true);
-            const data = await userApi.getById(id);
-            const rolesFromServer = await userApi.getAllRoles();
-            setRoles(rolesFromServer);
-
+            const data = await prizeApi.getById(id);
             setFormData({
-                userName: data.userName,
-                role: data.role,
-                isActive: data.isActive,
+                name: data.name,
+                weight: data.weight,
+                maxUses: data.maxUses,
+                isActive: data.isActive
             });
         } catch (err) {
-            setError('Не удалось загрузить пользователя');
+            setError('Не удалось загрузить пользователя', err);
             console.error(err);
         } finally {
             setLoading(false);
@@ -51,26 +49,32 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
         e.preventDefault();
         setError('');
 
-        if (!formData.userName.trim()) {
-            setError('Не заполнено имя пользователя');
+        if (!formData.name.trim()) {
+            setError('Не заполнено название приза');
             return;
         }
 
-        if (!formData.password.trim()) {
-            setError('Не заполнен пароль');
+        if (formData.weight < 1 || formData.weight > 10) {
+            setError('Шанс выпадения должен быть от 1 до 10');
+            return;
+        }
+
+        if (formData.maxUses < 0) {
+            setError('Количество выпадений не может быть отрицательным');
             return;
         }
 
         const payload = {
-            id: userId,
-            userName: formData.userName.trim(),
-            role: formData.role,
-            isActive: formData.isActive,
+            id: prizeId,
+            name: formData.name,
+            weight: formData.weight,
+            maxUses: formData.maxUses,
+            isActive: formData.isActive
         };
 
         try {
             setLoading(true);
-            await userApi.update(payload);
+            await prizeApi.update(payload);
             onSuccess();
         } catch (err) {
             setError(err.response?.data?.detail || 'Ошибка при обновлении');
@@ -78,21 +82,21 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
         } finally {
             setLoading(false);
         }
+
+        if (loading) {
+            return (
+                <div className="form-loading">
+                    <div className="spinner"></div>
+                    <p>Загрузка данных приза...</p>
+                </div>
+            );
+        }
     };
 
-    if (loading) {
-        return (
-            <div className="form-loading">
-                <div className="spinner"></div>
-                <p>Загрузка данных пользователя...</p>
-            </div>
-        );
-    }
-
     return (
-        <form onSubmit={handleSubmit} className="user-form">
+        <form onSubmit={handleSubmit} className="prize-form">
             <div className="form-header-with-cancel">
-                <h3 className="form-title">✏️ Редактировать пользователя</h3>
+                <h3 className="form-title">✏️ Редактировать приз</h3>
                 <button
                     type="button"
                     className="btn-cancel"
@@ -110,35 +114,45 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
             )}
 
             <div className="form-group">
-                <label htmlFor="userName">Имя пользователя</label>
+                <label htmlFor="name">Название</label>
                 <input
-                    id="userName"
+                    id="name"
                     type="text"
-                    name="userName"
-                    value={formData.userName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
-                    placeholder="Введите имя..."
+                    placeholder="Введите название..."
                     disabled={loading}
                 />
             </div>
 
             <div className="form-group">
-                <label htmlFor="role">Роль</label>
-                <select
-                    id="role"
-                    className="custom-select"
-                    name="role"
-                    value={formData.role}
+                <label htmlFor="weight">Шанс падения: 1 - редко, 10 - часто</label>
+                <input
+                    id="weight"
+                    type="number"
+                    name="weight"
+                    value={formData.weight}
                     onChange={handleChange}
+                    required
+                    placeholder="Введите значение..."
                     disabled={loading}
-                >
-                    {roles.map((role) => (
-                        <option key={role} value={role}>
-                            {role}
-                        </option>
-                    ))}
-                </select>
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="maxUses">Количество падений за смену</label>
+                <input
+                    id="maxUses"
+                    type="number"
+                    name="maxUses"
+                    value={formData.maxUses}
+                    onChange={handleChange}
+                    required
+                    placeholder="Введите значение..."
+                    disabled={loading}
+                />
             </div>
 
             <div className="form-group form-checkbox">
@@ -173,4 +187,4 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
     );
 };
 
-export default UserUpdateForm;
+export default PrizeUpdateForm;

@@ -1,25 +1,70 @@
 import React, { useState } from 'react';
-import PrizeForm from '../components/Prize/PrizeForm';
+import PrizeUpdateForm from '../components/Prize/PrizeUpdateForm';
+import PrizeCreateForm from '../components/Prize/PrizeCreateForm';
 import PrizeList from '../components/Prize/PrizeList';
+import "./PrizeListPage.css";
 
 function PrizeListPage() {
-    const [currentUserId, setCurrentUserId] = useState(null);
+    const [activeTab, setActiveTab] = useState('create'); // create или update
+    const [currentPrizeId, setCurrentPrizeId] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
 
     const handleSuccess = () => {
-        setCurrentUserId(null);
         setRefreshKey(prev => prev + 1);
+        if (activeTab === 'update') {
+            setActiveTab('create'); // после успешного обновления — возвращаемся на создание
+        }
+    };
+
+    const handleEditPrize = (prizeId) => {
+        setCurrentPrizeId(prizeId);
+        setActiveTab('update');
+    };
+
+    const handleCancelUpdate = () => {
+        setActiveTab('create');
+        setCurrentPrizeId(null);
     };
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-            <h1>Управление призами</h1>
+        <div className="prize-management-page">
+            <h1 className="page-title">Управление призами</h1>
 
-            {/* Форма создания или редактирования */}
-            <PrizeForm userId={currentUserId} onSuccess={handleSuccess} />
+            <div className="tabs">
+                <button
+                    className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('create')}>
+                    ➕ Создать
+                </button>
+                <button
+                    className={`tab-btn ${activeTab === 'update' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('update')}
+                    disabled={!currentPrizeId}
+                >
+                    ✏️ Изменить
+                </button>
+            </div>
 
-            {/* Список пользователей */}
-            <PrizeList key={refreshKey} onEdit={setCurrentUserId} />
+            <div className="prize-layout">
+                {activeTab === 'create' && <PrizeCreateForm onSuccess={handleSuccess} />}
+                {activeTab === 'update' && currentPrizeId && (
+                    <PrizeUpdateForm
+                        prizeId={currentPrizeId}
+                        onSuccess={handleSuccess}
+                        onCancel={handleCancelUpdate}
+                    />
+                )}
+                {activeTab === 'update' && !currentPrizeId && (
+                    <div className="placeholder-message">
+                        <p>Выберите приз из списка для редактирования</p>
+                        <div className="owl-icon">🦉</div>
+                    </div>
+                )}
+
+                <div className="list-column">
+                    <PrizeList key={refreshKey} onEdit={handleEditPrize} />
+                </div>
+            </div>
         </div>
     );
 }

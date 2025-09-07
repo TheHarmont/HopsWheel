@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import userApi from '../../services/user.service';
-import "./UserForm.css"; // используем тот же файл стилей
+import "./UserForm.css";
 
 const UserCreateForm = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -38,8 +38,13 @@ const UserCreateForm = ({ onSuccess }) => {
         e.preventDefault();
         setError('');
 
+        if (!formData.userName.trim()) {
+            setError('Не заполнено имя пользователя');
+            return;
+        }
+
         if (!formData.password.trim()) {
-            setError('Пароль обязателен');
+            setError('Не заполнен пароль');
             return;
         }
 

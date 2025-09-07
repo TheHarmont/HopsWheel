@@ -5,7 +5,7 @@ import UserList from '../components/User/UserList';
 import "./UserListPage.css";
 
 function UserListPage() {
-    const [activeTab, setActiveTab] = useState('create'); // 'create' | 'update'
+    const [activeTab, setActiveTab] = useState('create'); // create или update
     const [currentUserId, setCurrentUserId] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
 
@@ -47,22 +47,22 @@ function UserListPage() {
             </div>
 
             <div className="user-layout">
-                <div className="form-column">
-                    {activeTab === 'create' && <UserCreateForm onSuccess={handleSuccess} />}
-                    {activeTab === 'update' && currentUserId && (
-                        <UserUpdateForm
-                            userId={currentUserId}
-                            onSuccess={handleSuccess}
-                            onCancel={handleCancelUpdate}
-                        />
-                    )}
-                    {activeTab === 'update' && !currentUserId && (
-                        <div className="placeholder-message">
-                            <p>Выберите пользователя из списка для редактирования</p>
-                            <div className="owl-icon">🦉</div>
-                        </div>
-                    )}
-                </div>
+
+                {activeTab === 'create' && <UserCreateForm onSuccess={handleSuccess} />}
+                {activeTab === 'update' && currentUserId && (
+                    <UserUpdateForm
+                        userId={currentUserId}
+                        onSuccess={handleSuccess}
+                        onCancel={handleCancelUpdate}
+                    />
+                )}
+                {activeTab === 'update' && !currentUserId && (
+                    <div className="placeholder-message">
+                        <p>Выберите пользователя из списка для редактирования</p>
+                        <div className="owl-icon">🦉</div>
+                    </div>
+                )}
+
 
                 <div className="list-column">
                     <UserList key={refreshKey} onEdit={handleEditUser} />

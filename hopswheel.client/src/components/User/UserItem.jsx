@@ -6,7 +6,7 @@ const UserItem = ({ user, onEdit }) => {
         <div className="user-card">
             <div className="user-info">
                 <h4 className="user-name">{user.userName}</h4>
-                <div className="user-role">Роль: <span>{user.role === 'barmen' ? 'Бармен' : user.role}</span></div>
+                <div className="user-role">Роль: <span>{user.role}</span></div>
                 <div className={`user-status ${user.isActive ? 'active' : 'inactive'}`}>
                     {user.isActive ? '🟢 Активен' : '🔴 Неактивен'}
                 </div>

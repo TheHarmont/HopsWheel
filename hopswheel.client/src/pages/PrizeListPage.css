@@ -1,4 +1,4 @@
-.user-management-page {
+.prize-management-page {
     padding: 30px 20px;
     max-width: 1400px;
     margin: 0 auto;
@@ -56,7 +56,7 @@
         transform: none;
     }
 
-.user-layout {
+.prize-layout {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 30px;
@@ -155,7 +155,7 @@
 }
 
 @media (max-width: 992px) {
-    .user-layout {
+    .prize-layout {
         grid-template-columns: 1fr;
         gap: 40px;
     }
@@ -171,7 +171,7 @@
 }
 
 @media (max-width: 600px) {
-    .user-management-page {
+    .prize-management-page {
         padding: 20px 15px;
     }
 
