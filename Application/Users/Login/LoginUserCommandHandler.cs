@@ -19,14 +19,19 @@ internal sealed class LoginUserCommandHandler(
 
         if (user is null)
         {
-            return Result.Failure<string>(Error.NotFound("User.NotFount", "Не найден пользователь с таким именем!"));
+            return Result.Failure<string>(Error.NotFound("User.NotFount", "Не найден пользователь с таким именем"));
+        }
+
+        if(!user.IsActive)
+        {
+            return Result.Failure<string>(Error.Conflict("User.Conflict", "Активность пользователя ограничена"));
         }
 
         bool verified = passwordHasher.Verify(command.Password, user.PasswordHash);
 
         if (!verified)
         {
-            return Result.Failure<string>(Error.Problem("User.Problem", "Неверный логин или пароль!"));
+            return Result.Failure<string>(Error.Problem("User.Problem", "Неверный логин или пароль"));
         }
 
         string token = tokenProvider.Create(user);
