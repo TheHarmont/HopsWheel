@@ -22,8 +22,7 @@ internal sealed class GetByIdPrizeQueryHandler(
             Name = prize.Name,
             Weight = prize.Weight,
             MaxUses = prize.MaxUses,
-            IsActive = prize.IsActive,
-            IsDeleted = prize.IsDeleted
+            IsActive = prize.IsActive
         };
 
         return Result.Success(response);
