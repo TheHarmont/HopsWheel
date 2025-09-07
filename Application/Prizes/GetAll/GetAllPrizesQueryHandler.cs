@@ -14,6 +14,7 @@ internal sealed class GetAllPrizesQueryHandler(
         var prizes = await prizeRepository
            .Query()
            .AsNoTracking()
+           .Where(prize => !prize.IsDeleted)
            .Select(prize => new GetAllPrizesQueryDto()
            {
                Id = prize.Id,
