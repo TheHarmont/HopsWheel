@@ -16,7 +16,7 @@ public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         }
 
         var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
-        if (prize == null) return Result.Failure(Error.NotFound("Prize.NotFound", $"Не найден приз с id {command.Id}"));
+        if (prize == null) return Result.Failure(Error.NotFound("Prize.NotFound", $"Приз не найден"));
 
         prize.Name = command.Name;
         prize.Weight = command.Weight;

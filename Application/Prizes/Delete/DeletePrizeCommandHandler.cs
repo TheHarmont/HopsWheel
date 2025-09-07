@@ -9,7 +9,7 @@ public class DeletePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
     {
         var prize = await prizeRepository.GetAsync(p => p.Id == command.Id, ct);
 
-        if (prize == null) return Result.Failure(Error.NotFound("Prize.NotFound", $"Не найден объект с id {command.Id}"));
+        if (prize == null) return Result.Failure(Error.NotFound("Prize.NotFound", $"Объект не найден"));
         if (prize.IsDeleted) return Result.Failure(Error.Conflict("Prize.Conflict", $"Данный объект уже помечен как удаленный"));
 
         // Мягкое удаление
