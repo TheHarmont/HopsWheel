@@ -13,6 +13,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
         RuleFor(u => u.Password)
             .MinimumLength(5)
-            .WithMessage("Пароль должен превышать 5 символов!");
+            .WithMessage("Пароль должен превышать 5 символов");
     }
 }

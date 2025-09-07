@@ -28,7 +28,8 @@ internal sealed class RegisterUserCommandHandler(IUserRepository userRepository,
             UserName = command.UserName,
             UserNameNormalize = command.UserName.ToUpper(),
             Role = command.Role,
-            PasswordHash = passwordHasher.Hash(command.Password)
+            PasswordHash = passwordHasher.Hash(command.Password),
+            IsActive = true
         };
 
         await userRepository.AddAsync(user, ct);
