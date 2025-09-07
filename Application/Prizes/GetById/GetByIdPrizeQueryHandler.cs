@@ -11,7 +11,7 @@ internal sealed class GetByIdPrizeQueryHandler(
     {
         var prize = await prizeRepository.GetAsync(u => u.Id == query.Id);
 
-        if (prize == null)
+        if (prize == null || prize.IsDeleted)
         {
             return Result.Failure<GetByIdPrizeQueryDto>(Error.NotFound("Prize.NotFound", "Объект не найден"));
         }

@@ -35,6 +35,4 @@ public sealed class Spin : Entity
     /// Был ли выдан товар
     /// </summary>
     public bool WasIssued { get; set; }
-
-
 }

@@ -53,9 +53,12 @@ public class PrizeController : BaseController
     }
 
     [HttpDelete("Delete")]
-    public async Task<IResult> Delete(DeletePrizeCommand command, CancellationToken ct = default)
+    public async Task<IResult> Delete(Guid id, CancellationToken ct = default)
     {
-        Result result = await Mediator.Send(command, ct);
+        Result result = await Mediator.Send(new DeletePrizeCommand()
+        {
+            Id = id
+        }, ct);
 
         return result.Match(Results.NoContent, CustomResults.Problem);
     }
