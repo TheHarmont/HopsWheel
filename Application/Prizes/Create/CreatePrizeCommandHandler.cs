@@ -22,7 +22,7 @@ public class CreatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
             Id = Guid.NewGuid(),
             Name = command.Name,
             Weight = command.Weight,
-            IsActive = command.IsActive,
+            IsActive = true,
             MaxUses = command.MaxUses
         };
 
