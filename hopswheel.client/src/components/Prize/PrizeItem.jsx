@@ -1,7 +1,7 @@
 import React from 'react';
 import "./PrizeItem.css";
 
-const PrizeItem = ({ prize, onEdit }) => {
+const PrizeItem = ({ prize, onEdit, onDelete }) => {
     return (
         <div className="prize-card">
             <div className="prize-info">
@@ -28,7 +28,7 @@ const PrizeItem = ({ prize, onEdit }) => {
                 </button>
                 <button
                     className="btn-delete"
-                    onClick={() => onDelete(prize.id)} // ← добавь обработчик в пропсы
+                    onClick={() => onDelete(prize.id)}
                     aria-label={`Удалить ${prize.name}`}
                 >
                     🗑️ Удалить

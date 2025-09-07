@@ -26,6 +26,13 @@ const prizeService = {
         const axios = createInstance(API_URL);
         await axios.put(`/Update`, userData);
     },
+
+    delete: async (id) => {
+        const axios = createInstance(API_URL);
+        await axios.delete(`/Delete`, {
+            params: { Id: id },
+        });
+    }
 };
 
 export default prizeService;

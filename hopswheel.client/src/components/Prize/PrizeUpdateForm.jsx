@@ -5,8 +5,8 @@ import "./PrizeForm.css";
 const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
     const [formData, setFormData] = useState({
         name: '',
-        weight: 10,
-        maxUses: 0,
+        weight: '',
+        maxUses: '',
         isActive: true
     });
 
@@ -30,7 +30,7 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
                 isActive: data.isActive
             });
         } catch (err) {
-            setError('Не удалось загрузить пользователя', err);
+            setError('Не удалось загрузить приз', err);
             console.error(err);
         } finally {
             setLoading(false);
@@ -128,7 +128,7 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
             </div>
 
             <div className="form-group">
-                <label htmlFor="weight">Шанс падения: 1 - редко, 10 - часто</label>
+                <label htmlFor="weight">Шанс падения</label>
                 <input
                     id="weight"
                     type="number"
@@ -136,13 +136,13 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
                     value={formData.weight}
                     onChange={handleChange}
                     required
-                    placeholder="Введите значение..."
+                    placeholder="1 - редко, 10 - часто"
                     disabled={loading}
                 />
             </div>
 
             <div className="form-group">
-                <label htmlFor="maxUses">Количество падений за смену</label>
+                <label htmlFor="maxUses">Макс. падений за смену</label>
                 <input
                     id="maxUses"
                     type="number"
@@ -150,7 +150,7 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
                     value={formData.maxUses}
                     onChange={handleChange}
                     required
-                    placeholder="Введите значение..."
+                    placeholder="0 - неграниченно"
                     disabled={loading}
                 />
             </div>

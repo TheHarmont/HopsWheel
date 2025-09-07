@@ -3,7 +3,7 @@ import prizeApi from '../../services/prize.service';
 import PrizeItem from './PrizeItem';
 import "./PrizeList.css";
 
-const PrizeList = ({ onEdit }) => {
+const PrizeList = ({ onEdit , onDelete}) => {
     const [prizes, setPrizes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -63,7 +63,7 @@ const PrizeList = ({ onEdit }) => {
                 <div className="prizes-grid-container">
                     <div className="prizes-grid">
                         {filteredPrizes.map((prize) => (
-                            <PrizeItem key={prize.id} prize={prize} onEdit={onEdit} />
+                            <PrizeItem key={prize.id} prize={prize} onEdit={onEdit} onDelete={onDelete} />
                         ))}
                     </div>
                 </div>

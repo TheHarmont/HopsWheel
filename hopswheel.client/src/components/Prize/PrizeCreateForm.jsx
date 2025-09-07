@@ -5,8 +5,8 @@ import "./PrizeForm.css";
 const PrizeCreateForm = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
         name: '',
-        weight: 10,
-        maxUses: 0,
+        weight: '',
+        maxUses: '',
     });
 
     const [loading, setLoading] = useState(false);
@@ -81,7 +81,7 @@ const PrizeCreateForm = ({ onSuccess }) => {
             </div>
 
             <div className="form-group">
-                <label htmlFor="weight">Шанс падения: 1 - редко, 10 - часто</label>
+                <label htmlFor="weight">Шанс падения</label>
                 <input
                     id="weight"
                     type="number"
@@ -89,13 +89,13 @@ const PrizeCreateForm = ({ onSuccess }) => {
                     value={formData.weight}
                     onChange={handleChange}
                     required
-                    placeholder="Введите значение..."
+                    placeholder="1 - редко, 10 - часто"
                     disabled={loading}
                 />
             </div>
 
             <div className="form-group">
-                <label htmlFor="maxUses">Количество падений за смену</label>
+                <label htmlFor="maxUses">Макс. падений за смену</label>
                 <input
                     id="maxUses"
                     type="number"
@@ -103,7 +103,7 @@ const PrizeCreateForm = ({ onSuccess }) => {
                     value={formData.maxUses}
                     onChange={handleChange}
                     required
-                    placeholder="Введите значение..."
+                    placeholder="0 - неграниченно"
                     disabled={loading}
                 />
             </div>

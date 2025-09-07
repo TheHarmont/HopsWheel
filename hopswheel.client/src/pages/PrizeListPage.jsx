@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PrizeUpdateForm from '../components/Prize/PrizeUpdateForm';
 import PrizeCreateForm from '../components/Prize/PrizeCreateForm';
+import PrizeDeleteForm from '../components/Prize/PrizeDeleteForm';
 import PrizeList from '../components/Prize/PrizeList';
 import "./PrizeListPage.css";
 
@@ -8,12 +9,18 @@ function PrizeListPage() {
     const [activeTab, setActiveTab] = useState('create'); // create или update
     const [currentPrizeId, setCurrentPrizeId] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleSuccess = () => {
         setRefreshKey(prev => prev + 1);
+
+        //При любом успешном действии переводим в состояние create 
+        //и очищаем выбранные объект
         if (activeTab === 'update') {
-            setActiveTab('create'); // после успешного обновления — возвращаемся на создание
+            setActiveTab('create'); 
         }
+        setCurrentPrizeId(null);
+        setIsDeleteModalOpen(false);
     };
 
     const handleEditPrize = (prizeId) => {
@@ -21,10 +28,22 @@ function PrizeListPage() {
         setActiveTab('update');
     };
 
-    const handleCancelUpdate = () => {
-        setActiveTab('create');
+    const handleCancelEdit = () => {
         setCurrentPrizeId(null);
+        setActiveTab('create');
     };
+
+    const handleDeletePrize = (prizeId) => {
+        setCurrentPrizeId(prizeId);
+        setActiveTab('create');
+        setIsDeleteModalOpen(true);
+    };
+    const handleCancelDelete = () => {
+        setCurrentPrizeId(null);
+        setActiveTab('create');
+        setIsDeleteModalOpen(false);
+    };
+
 
     return (
         <div className="prize-management-page">
@@ -46,12 +65,12 @@ function PrizeListPage() {
             </div>
 
             <div className="prize-layout">
-                {activeTab === 'create' && <PrizeCreateForm onSuccess={handleSuccess} />}
+                {activeTab === 'create' && <PrizeCreateForm onSuccess={handleSuccess}/>}
                 {activeTab === 'update' && currentPrizeId && (
                     <PrizeUpdateForm
                         prizeId={currentPrizeId}
                         onSuccess={handleSuccess}
-                        onCancel={handleCancelUpdate}
+                        onCancel={handleCancelEdit}
                     />
                 )}
                 {activeTab === 'update' && !currentPrizeId && (
@@ -60,9 +79,16 @@ function PrizeListPage() {
                         <div className="owl-icon">🦉</div>
                     </div>
                 )}
+                {isDeleteModalOpen && currentPrizeId && (
+                    <PrizeDeleteForm
+                        prizeId={currentPrizeId}
+                        onSuccess={handleSuccess}
+                        onCancel={handleCancelDelete}
+                    />
+                )}
 
                 <div className="list-column">
-                    <PrizeList key={refreshKey} onEdit={handleEditPrize} />
+                    <PrizeList key={refreshKey} onEdit={handleEditPrize} onDelete={handleDeletePrize} />
                 </div>
             </div>
         </div>
