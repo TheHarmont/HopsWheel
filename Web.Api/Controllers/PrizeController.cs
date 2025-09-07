@@ -26,14 +26,17 @@ public class PrizeController : BaseController
     }
 
     [HttpGet("GetById")]
-    public async Task<IResult> GetById(GetByIdPrizeQuery command, CancellationToken ct = default)
+    public async Task<IResult> GetById(Guid id, CancellationToken ct = default)
     {
-        Result<GetByIdPrizeQueryDto> result = await Mediator.Send(command, ct);
+        Result<GetByIdPrizeQueryDto> result = await Mediator.Send(new GetByIdPrizeQuery()
+        {
+            Id = id
+        }, ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpPost("Add")]
+    [HttpPost("Create")]
     public async Task<IResult> Create(CreatePrizeCommand command, CancellationToken ct = default)
     {
         Result<Guid> result = await Mediator.Send(command, ct);

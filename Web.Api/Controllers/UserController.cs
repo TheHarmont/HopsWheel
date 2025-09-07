@@ -25,10 +25,10 @@ public class UserController : BaseController
     }
 
     [HttpGet("GetById")]
-    public async Task<IResult> GetById(Guid Id, CancellationToken ct = default)
+    public async Task<IResult> GetById(Guid id, CancellationToken ct = default)
     {
         Result<GetByIdUserQueryDto> result = await Mediator.Send(new GetByIdUserQuery() {
-            Id = Id
+            Id = id
         }, ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
