@@ -16,11 +16,6 @@ public sealed class Spin : Entity
     public string PrizeNameAtTime { get; set; }
 
     /// <summary>
-    /// Категория приза на момент выигрыша
-    /// </summary>
-    public string? PrizeCategoryAtTime { get; set; }
-
-    /// <summary>
     /// Дата вращения колеса
     /// </summary>
     public DateTime SpinDate {  get; set; }
