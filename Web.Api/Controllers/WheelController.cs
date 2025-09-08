@@ -1,4 +1,8 @@
 ﻿using Application.Prizes.GetAll;
+using Application.Users.GetAll;
+using Application.Wheel.GetAvailablePrizesName;
+using Application.Wheel.GetSpinResult;
+using Application.Wheel.WinConfirm;
 using Domain.Primitives;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,20 +16,33 @@ namespace Web.Api.Controllers;
 [ApiController]
 public class WheelController : BaseController
 {
-    [HttpGet("GetPrizes")]
-    public async Task<IResult> GetPrizes(CancellationToken ct = default)
+    [HttpGet("GetAvailablePrizes")]
+    public async Task<IResult> GetAvailablePrizes(CancellationToken ct = default)
     {
-        Result<List<string>> result = await Mediator.Send(new GetCurrentPrizesQuery(), ct);
+        Result<List<string>> result = await Mediator.Send(new GetAvailablePrizesNameQuery(), ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpGet("GetPrize")]
-    public async Task<IResult> GetPrize(CancellationToken ct = default)
+    [HttpGet("PerformSpin")]
+    public async Task<IResult> PerformSpin(Guid userId, CancellationToken ct = default)
     {
-        await Task.Delay(1000);
-        string[] prizes = new[] { "Приз1", "Приз2", "Приз3", "Приз4", "Приз5", "Приз6", "Приз7", };
-        var result = Result.Success(prizes[new Random().Next(prizes.Length-1)]);
+        Result<GetSpinResultQueryDto> result = await Mediator.Send(new GetSpinResultQuery() 
+        { 
+            UserId = userId 
+        }, ct);
+
         return result.Match(Results.Ok, CustomResults.Problem);
+    }
+
+    [HttpPost("WinConfirm")]
+    public async Task<IResult> WinConfirm(Guid spinId, CancellationToken ct = default)
+    {
+        Result result = await Mediator.Send(new WinConfirmCommand()
+        {
+            SpinId = spinId
+        }, ct);
+
+        return result.Match(Results.NoContent, CustomResults.Problem);
     }
 }
