@@ -7,5 +7,4 @@ public class GetByIdPrizeQueryDto
     public string Name { get; set; }
     public int Weight { get; set; }
     public bool IsActive { get; set; }
-    public int MaxUses { get; set; }
 }

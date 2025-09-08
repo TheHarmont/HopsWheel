@@ -23,7 +23,6 @@ public class CreatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
             Name = command.Name,
             Weight = command.Weight,
             IsActive = true,
-            MaxUses = command.MaxUses
         };
 
         await prizeRepository.AddAsync(prize, ct);

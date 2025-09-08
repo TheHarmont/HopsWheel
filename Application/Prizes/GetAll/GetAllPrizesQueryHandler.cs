@@ -20,7 +20,6 @@ internal sealed class GetAllPrizesQueryHandler(
                Id = prize.Id,
                Name = prize.Name,
                Weight = prize.Weight,
-               MaxUses = prize.MaxUses,
                IsActive = prize.IsActive
            })
            .ToListAsync(ct) ?? new();

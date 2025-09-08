@@ -11,8 +11,5 @@ public class UpdatePrizeCommandValidator : AbstractValidator<UpdatePrizeCommand>
         RuleFor(p => p.Weight)
             .InclusiveBetween(1, 10)
             .WithMessage("Шанс выпадения должен быть в диапазоне от 1, до 10");
-        RuleFor(p => p.MaxUses)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage("Количество выпадений не может быть отрицательным");
     }
 }

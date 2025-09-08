@@ -8,5 +8,4 @@ public sealed record UpdatePrizeCommand : IRequest<Result>
     public string Name { get; set; }
     public int Weight { get; set; }
     public bool IsActive { get; set; }
-    public int MaxUses { get; set; }
 }

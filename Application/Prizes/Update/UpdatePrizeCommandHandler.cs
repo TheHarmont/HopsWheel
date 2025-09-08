@@ -21,7 +21,6 @@ public class UpdatePrizeCommandHandler(IPrizeRepository prizeRepository) : IRequ
         prize.Name = command.Name;
         prize.Weight = command.Weight;
         prize.IsActive = command.IsActive;
-        prize.MaxUses = command.MaxUses;
         prize.UpdatedAt = DateTime.UtcNow;
 
         await prizeRepository.UpdateAsync(prize, ct);

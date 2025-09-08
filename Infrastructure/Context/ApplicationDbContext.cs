@@ -10,7 +10,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<User> Users { get; set; }
     public DbSet<Spin> Spins { get; set; }
     public DbSet<Prize> Prizes { get; set; }
-    public DbSet<PrizeUsage> PrizeUsages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

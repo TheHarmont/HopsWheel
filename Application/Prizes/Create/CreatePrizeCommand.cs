@@ -6,5 +6,4 @@ public sealed record CreatePrizeCommand : IRequest<Result<Guid>>
 {
     public string Name { get; set; }
     public int Weight { get; set; }
-    public int MaxUses { get; set; }
 }
