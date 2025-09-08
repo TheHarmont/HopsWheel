@@ -4,6 +4,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import './Wheel.css';
 // Импорт функций для работы с API: получение призов и запуск вращения
 import wheelApi from '../../services/wheel.service';
+import { getCurrentUser } from '../../services/auth.service';
 
 // Основной компонент "Колесо Фортуны"
 const Wheel = () => {
@@ -38,7 +39,7 @@ const Wheel = () => {
     useEffect(() => {
         const fetchPrizes = async () => {
             try {
-                const prizes = await wheelApi.getPrizes(); // Запрос к API за списком призов
+                const prizes = await wheelApi.getAvailablePrizes(); // Запрос к API за списком призов
 
                 // Проверка, что данные корректны (массив и не пустой)
                 if (Array.isArray(prizes) && prizes.length > 0) {
@@ -136,12 +137,13 @@ const Wheel = () => {
         setError('');         // Сбрасываем ошибку
 
         let serverResult;
-
+        let user;
         try {
-            serverResult = await wheelApi.getPrize(); // Запрос к серверу за результатом
+            user = getCurrentUser();
+            serverResult = await wheelApi.performSpin(user.id); // Запрос к серверу за результатом
 
             // Извлечение имени приза (если сервер возвращает объект)
-            const prizeName = typeof serverResult === 'object' ? serverResult.name : serverResult;
+            const prizeName = typeof serverResult === 'object' ? serverResult.prizeName : serverResult;
             console.log('Выигранный приз:', prizeName);
 
             // Проверка: приз должен быть в списке (защита от несоответствия)

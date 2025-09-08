@@ -11,10 +11,7 @@ const PrizeItem = ({ prize, onEdit, onDelete }) => {
                         {prize.isActive ? '🟢 Активен' : '🔴 Неактивен'}
                     </div>
                     <div className="prize-drop-chance">
-                        <span className="label">Шанс падения:</span> <span className="value">{prize.weight}</span>
-                    </div>
-                    <div className="prize-drop-count">
-                        <span className="label">Количество падений:</span> <span className="value">{prize.maxUses === 0 ? '∞' : prize.maxUses}</span>
+                        <span className="label">Шанс падения:</span> <span className="value">{prize.weight}/10</span>
                     </div>
                 </div>
             </div>

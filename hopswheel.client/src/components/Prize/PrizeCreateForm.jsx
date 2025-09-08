@@ -5,8 +5,7 @@ import "./PrizeForm.css";
 const PrizeCreateForm = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
         name: '',
-        weight: '',
-        maxUses: '',
+        weight: ''
     });
 
     const [loading, setLoading] = useState(false);
@@ -34,15 +33,9 @@ const PrizeCreateForm = ({ onSuccess }) => {
             return;
         }
 
-        if (formData.maxUses < 0) {
-            setError('Количество выпадений не может быть отрицательным');
-            return;
-        }
-
         const payload = {
             name: formData.name,
             weight: formData.weight,
-            maxUses: formData.maxUses,
         };
 
         try {
@@ -90,20 +83,6 @@ const PrizeCreateForm = ({ onSuccess }) => {
                     onChange={handleChange}
                     required
                     placeholder="1 - редко, 10 - часто"
-                    disabled={loading}
-                />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="maxUses">Макс. падений за смену</label>
-                <input
-                    id="maxUses"
-                    type="number"
-                    name="maxUses"
-                    value={formData.maxUses}
-                    onChange={handleChange}
-                    required
-                    placeholder="0 - неграниченно"
                     disabled={loading}
                 />
             </div>

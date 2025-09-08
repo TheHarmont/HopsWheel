@@ -3,15 +3,25 @@ import { createInstance } from '../services/auth.service';
 const API_URL = 'https://localhost:8001/api/Wheel';
 
 const wheelService = {
-    getPrizes: async () => {
+    getAvailablePrizes: async () => {
         const axios = createInstance(API_URL);
-        const response = await axios.get(`/GetPrizes`);
+        const response = await axios.get(`/GetAvailablePrizes`);
         return response.data;
     },
 
-    getPrize: async () => {
+    performSpin: async (id) => {
         const axios = createInstance(API_URL);
-        const response = await axios.get(`/GetPrize`);
+        const response = await axios.get(`/PerformSpin`, {
+            params: { UserId: id },
+        });
+        return response.data;
+    },
+
+    WinConfirm: async () => {
+        const axios = createInstance(API_URL);
+        const response = await axios.get(`/WinConfirm`, {
+            params: { SpinId: id },
+        });
         return response.data;
     },
 };

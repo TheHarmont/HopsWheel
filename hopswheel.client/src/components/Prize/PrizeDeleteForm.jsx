@@ -77,13 +77,7 @@ const PrizeDeleteForm = ({ prizeId, onSuccess, onCancel }) => {
                             </div>
                             <div className="prize-field">
                                 <span className="field-label">Шанс выпадения:</span>
-                                <span className="field-value">{prize.weight}</span>
-                            </div>
-                            <div className="prize-field">
-                                <span className="field-label">Макс. использований:</span>
-                                <span className="field-value">
-                                    {prize.maxUses === 0 ? '∞' : prize.maxUses}
-                                </span>
+                                <span className="field-value">{prize.weight}/10</span>
                             </div>
                             <div className="prize-field">
                                 <span className="field-label">Статус:</span>

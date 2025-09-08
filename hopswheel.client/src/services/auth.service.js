@@ -62,6 +62,7 @@ const getCurrentUser = () => {
         const payload = JSON.parse(atob(token.split('.')[1]));
         
         return {
+            id: payload.sub,
             roles: payload[ROLE_KEY], // поддержка строк и массива
             username: payload.name || payload.sub,
         };
