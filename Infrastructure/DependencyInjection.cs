@@ -69,18 +69,6 @@ public static class DependencyInjection
                 };
             });
 
-        services.AddCors(options =>
-        {
-            options.AddPolicy("FrontendPolicy", policy =>
-            {
-                var origins = configuration.GetSection("AllowedOrigins").Get<string[]>();
-                policy.WithOrigins(origins!)
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
-            });
-        });
-
         services.AddSingleton<ITokenProvider, TokenProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
