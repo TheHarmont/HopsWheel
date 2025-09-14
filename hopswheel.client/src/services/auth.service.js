@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken, setToken, removeToken } from '../utils/storage'
 
-const API_URL = '/Auth';
+const API_URL = 'https://localhost:8001/api/Auth';
 const ROLE_KEY = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
 
 const axiosAuth = axios.create({
