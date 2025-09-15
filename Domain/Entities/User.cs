@@ -12,4 +12,28 @@ public sealed class User : Entity
     public Role Role { get; set; }
     public bool IsActive { get; set; }
     public string PasswordHash { get; set; }
+
+    public User()
+    {
+    }
+
+    public User(Guid id, string userName, Role role, string passwordHash) : this()
+    {
+        Id = id;
+        UserName = userName;
+        UserNameNormalize = userName.ToUpper();
+        Role = role;
+        IsActive = true;
+        PasswordHash = passwordHash;
+    }
+
+    public User(string id, string userName, Role role, string passwordHash) : this()
+    {
+        Id = Guid.Parse(id);
+        UserName = userName;
+        UserNameNormalize = userName.ToUpper();
+        Role = role;
+        IsActive = true;
+        PasswordHash = passwordHash;
+    }
 }
