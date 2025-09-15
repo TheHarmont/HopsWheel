@@ -1,6 +1,6 @@
 import { createInstance } from '../services/auth.service';
 
-const API_URL = 'https://localhost:8001/api/Prize';
+const API_URL = 'http://localhost:8000/api/Prize';
 
 const prizeService = {
     getAll: async () => {

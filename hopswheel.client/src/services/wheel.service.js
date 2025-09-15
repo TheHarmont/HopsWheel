@@ -1,6 +1,6 @@
 import { createInstance } from '../services/auth.service';
 
-const API_URL = 'https://localhost:8001/api/Wheel';
+const API_URL = 'http://localhost:8000/api/Wheel';
 
 const wheelService = {
     getAvailablePrizes: async () => {
