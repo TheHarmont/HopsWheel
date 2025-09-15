@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 public enum Role
 {
-    admin = 1,
-    barmen = 0,
+    admin = 0,
+    barmen = 1,
 }
