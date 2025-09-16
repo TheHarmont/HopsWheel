@@ -1,63 +1,459 @@
-/* src/components/Wheel.css */
 .wheel-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #2c1810 0%, #4a2c18 50%, #6b4226 100%);
+    position: relative;
+    font-family: 'Georgia', serif;
+}
+
+.wheel-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1400px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.wheel-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 300px;
 }
 
 .wheel-canvas {
-    border: 2px solid #ddd;
     border-radius: 50%;
-    background-color: #fff;
-    margin-bottom: 20px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+    margin-bottom: 40px;
+    background: radial-gradient(circle, #8b4513, #2c1810);
+    border: 8px solid #e67e22;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 .spin-button {
-    padding: 12px 24px;
-    font-size: 18px;
+    padding: 18px 40px;
+    font-size: 1.2rem;
     font-weight: bold;
-    color: #fff;
-    background-color: #e74c3c;
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
     .spin-button:hover:not(:disabled) {
-        background-color: #c0392b;
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(230, 126, 34, 0.6);
     }
 
     .spin-button:disabled {
-        background-color: #95a5a6;
+        opacity: 0.6;
         cursor: not-allowed;
+        transform: none;
     }
 
-.result {
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.result-preview {
     margin-top: 20px;
-    font-size: 20px;
-    color: #2c3e50;
-    animation: fadeIn 0.5s ease-in;
+    color: #a8d5ba;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    animation: fadeIn 0.5s ease;
+}
+
+.error-message {
+    color: #e74c3c;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 16px;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Боковая панель */
+.sidebar-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex: 0 0 300px;
+    background: rgba(44, 24, 16, 0.6);
+    padding: 25px;
+    border-radius: 20px;
+    border: 2px solid rgba(230, 126, 34, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    color: #f5f5f5;
+}
+
+.panel-title {
+    font-size: 1.4rem;
+    color: #e67e22;
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(230, 126, 34, 0.3);
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Список призов */
+.prizes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.prize-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border-left: 4px solid #e67e22;
+    transition: all 0.2s ease;
+}
+
+    .prize-item:hover {
+        background: rgba(230, 126, 34, 0.1);
+        transform: translateX(5px);
+    }
+
+.prize-icon {
+    font-size: 1.2rem;
+}
+
+.prize-name {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* История вращений */
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 14px;
+    margin-bottom: 10px;
+    background: rgba(168, 213, 186, 0.1);
+    border-radius: 10px;
+    border-left: 4px solid #a8d5ba;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.history-prize {
+    font-weight: bold;
+    color: #f39c12;
+}
+
+.history-date {
+    color: #ccc;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.empty-state, .loading-text {
+    text-align: center;
+    color: #a8d5ba;
+    font-style: italic;
+    padding: 20px 0;
+}
+
+/* Модальное окно */
+.prize-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    animation: fadeIn 0.4s ease;
+    padding: 20px;
+}
+
+.prize-modal {
+    background: rgba(28, 18, 12, 0.97);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    border: 2px solid rgba(230, 126, 34, 0.4);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #f5f5f5;
+    text-align: center;
+}
+
+.modal-header {
+    background: rgba(230, 126, 34, 0.1);
+    padding: 24px 24px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(230, 126, 34, 0.3);
+}
+
+    .modal-header h2 {
+        margin: 0;
+        color: #e67e22;
+        font-size: 1.8rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #e74c3c;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+    .modal-close:hover {
+        background: rgba(231, 76, 60, 0.3);
+        transform: rotate(90deg) scale(1.1);
+    }
+
+.modal-body {
+    padding: 40px 30px;
+}
+
+.prize-display {
+    margin: 20px 0;
+}
+
+.prize-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+.prize-name {
+    color: #f39c12;
+    font-size: 2rem;
+    margin: 10px 0;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.prize-description {
+    color: #a8d5ba;
+    font-size: 1.1rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 20px;
+    padding: 0 30px 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-cancel,
+.btn-award {
+    padding: 16px 32px;
+    border: none;
+    border-radius: 14px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: #a8d5ba;
+    border: 2px solid rgba(168, 213, 186, 0.3);
+}
+
+    .btn-cancel:hover {
+        background: rgba(168, 213, 186, 0.1);
+        transform: translateX(-5px);
+    }
+
+.btn-award {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    border: none;
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+}
+
+    .btn-award:hover {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(46, 204, 113, 0.6);
+    }
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
     }
 
     to {
         opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
         transform: translateY(0);
     }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .wheel-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar-panel {
+        width: 100%;
+        max-width: 600px;
+        flex: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .wheel-canvas {
+        width: 90vw;
+        height: 90vw;
+        max-width: 500px;
+        max-height: 500px;
+    }
+
+    .spin-button {
+        padding: 16px 30px;
+        font-size: 1.1rem;
+    }
+
+    .prize-modal {
+        margin: 10px;
+        border-radius: 20px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .prize-name {
+        font-size: 1.6rem;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .btn-cancel,
+    .btn-award {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .sidebar-panel {
+        padding: 20px 15px;
+    }
+
+    .panel-title {
+        font-size: 1.2rem;
+    }
+}
+
+.error-state {
+    color: #e74c3c;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 40px;
 }

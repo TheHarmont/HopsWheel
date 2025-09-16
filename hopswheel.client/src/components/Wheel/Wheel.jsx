@@ -1,193 +1,189 @@
-// Импорт необходимых хуков React
 import React, { useRef, useEffect, useState } from 'react';
-// Импорт стилей для компонента
 import './Wheel.css';
-// Импорт функций для работы с API: получение призов и запуск вращения
 import wheelApi from '../../services/wheel.service';
 import { getCurrentUser } from '../../services/auth.service';
 
-// Основной компонент "Колесо Фортуны"
 const Wheel = () => {
-    // Ссылка на элемент canvas для прямого доступа к контексту рисования
     const canvasRef = useRef(null);
+    const [isSpinning, setIsSpinning] = useState(false);
+    const [rotation, setRotation] = useState(0);
+    const [result, setResult] = useState('');
+    const [segments, setSegments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [showResultModal, setShowResultModal] = useState(false);
 
-    // Состояния компонента
-    const [isSpinning, setIsSpinning] = useState(false); // Флаг: крутится ли колесо
-    const [rotation, setRotation] = useState(0);         // Текущий угол поворота колеса (в градусах)
-    const [result, setResult] = useState('');             // Результат вращения (выигранный приз)
-    const [segments, setSegments] = useState([]);         // Список призов (секторов колеса)
-    const [loading, setLoading] = useState(true);         // Флаг загрузки данных с сервера
-    const [error, setError] = useState(false);            // Флаг ошибки при загрузке
+    // История и призы
+    const [prizes, setPrizes] = useState([]);
+    const [spinHistory, setSpinHistory] = useState([]);
+    const [historyLoading, setHistoryLoading] = useState(true);
 
-    // Константы
-    const spinDuration = 5000; // Длительность анимации вращения (в миллисекундах)
-    const spinAngle = 3600;    // Минимальный угол вращения (10 полных оборотов)
+    const spinDuration = 5000;
+    const spinAngle = 3600;
 
-    // Цвета для секторов колеса (циклически повторяются, если секторов больше 8)
     const colors = [
-        '#FF6384', // красный
-        '#36A2EB', // синий
-        '#FFCE56', // жёлтый
-        '#4BC0C0', // бирюзовый
-        '#9966FF', // фиолетовый
-        '#FF9F40', // оранжевый
-        '#8AC24A', // зелёный
-        '#E7E7E7', // серый
+        '#e67e22', // оранжевый (основной)
+        '#8b4513', // коричневый (седло)
+        '#27ae60', // зелёный (бархат)
+        '#c0392b', // бордовый (вино)
+        '#f39c12', // янтарный
+        '#2c1810', // тёмно-коричневый
+        '#a8d5ba', // мягкий зелёный (мох)
+        '#d35400', // тыквенный
     ];
 
-    // Эффект: загрузка призов при первом рендере компонента
     useEffect(() => {
         const fetchPrizes = async () => {
             try {
-                const prizes = await wheelApi.getAvailablePrizes(); // Запрос к API за списком призов
-
-                // Проверка, что данные корректны (массив и не пустой)
-                if (Array.isArray(prizes) && prizes.length > 0) {
-                    setSegments(prizes); // Сохраняем призы в состояние
+                const availablePrizes = await wheelApi.getAvailablePrizes();
+                if (Array.isArray(availablePrizes) && availablePrizes.length > 0) {
+                    setSegments(availablePrizes);
                 } else {
                     throw new Error('Некорректные данные призов');
                 }
+
+                // Получаем полный список призов
+                setPrizes(Array.isArray(availablePrizes) ? availablePrizes : []);
+
+                // Получаем историю
+                //const history = await wheelApi.getSpinHistory();
+                const history = [];
+                setSpinHistory(Array.isArray(history) ? history.slice(0, 10) : []); // последние 10
+
             } catch (err) {
-                console.error('Не удалось загрузить призы:', err);
-                setError(true); // Устанавливаем флаг ошибки
+                console.error('Не удалось загрузить данные:', err);
+                setError('Ошибка загрузки данных');
             } finally {
-                setLoading(false); // Завершаем состояние загрузки
+                setLoading(false);
+                setHistoryLoading(false);
             }
         };
 
-        fetchPrizes(); // Запускаем загрузку
-    }, []); // Пустой массив зависимостей = выполнение один раз при монтировании
+        fetchPrizes();
+    }, []);
 
-    // Функция отрисовки колеса на canvas
     const drawWheel = () => {
-        // Не рисуем, если нет секторов или идёт загрузка
         if (segments.length === 0 || loading) return;
 
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d'); // Получаем контекст рисования
-        const centerX = canvas.width / 2;   // Центр по X
-        const centerY = canvas.height / 2;  // Центр по Y
-        const radius = Math.min(centerX, centerY) - 10; // Радиус колеса с отступом
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 10;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Очищаем холст
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const anglePerSegment = 360 / segments.length; // Угол одного сектора
+        const anglePerSegment = 360 / segments.length;
 
-        // Отрисовка каждого сектора
         for (let i = 0; i < segments.length; i++) {
-            // Начальный и конечный угол сектора с учётом текущего поворота колеса
             const startAngle = ((i * anglePerSegment) + rotation) * (Math.PI / 180);
             const endAngle = ((i + 1) * anglePerSegment + rotation) * (Math.PI / 180);
 
             ctx.beginPath();
-            ctx.moveTo(centerX, centerY); // Перемещаемся в центр
-            ctx.arc(centerX, centerY, radius, startAngle, endAngle); // Рисуем дугу
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.closePath();
 
-            // Заливка и обводка сектора
-            ctx.fillStyle = colors[i % colors.length]; // Цвет по циклу
+            ctx.fillStyle = colors[i % colors.length];
             ctx.fill();
-            ctx.strokeStyle = '#fff'; // Белая обводка
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
             ctx.stroke();
 
-            // Добавление текста внутри сектора
-            ctx.save(); // Сохраняем текущее состояние контекста
-            ctx.translate(centerX, centerY); // Перемещаем начало координат в центр
-            // Поворачиваем на середину сектора
+            ctx.save();
+            ctx.translate(centerX, centerY);
             ctx.rotate(startAngle + (anglePerSegment * Math.PI / 180) / 2);
-            ctx.fillStyle = '#fff'; // Белый текст
-            ctx.font = 'bold 14px Arial';
-            ctx.textAlign = 'right'; // Текст справа от центра
-            ctx.textBaseline = 'middle'; // Вертикально по центру
-            ctx.fillText(segments[i], radius - 15, 0); // Рисуем название приза
-            ctx.restore(); // Восстанавливаем состояние (без поворота и сдвига)
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Georgia, serif';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(0,0,0,0.7)';
+            ctx.shadowBlur = 4;
+            ctx.fillText(segments[i], radius - 20, 0);
+            ctx.restore();
         }
 
-        // Отрисовка центрального круга (ядро колеса)
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 15, 0, 2 * Math.PI);
-        ctx.fillStyle = '#333'; // Тёмный цвет
+        ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
+        const gradient = ctx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 25);
+        gradient.addColorStop(0, '#8B4513');
+        gradient.addColorStop(1, '#5D2906');
+        ctx.fillStyle = gradient;
         ctx.fill();
 
-        // Отрисовка указателя (стрелки) справа от колеса
-        ctx.fillStyle = '#333';
+        ctx.save();
+        ctx.translate(centerX + radius + 10, centerY);
+        ctx.fillStyle = '#e67e22';
         ctx.beginPath();
-        ctx.moveTo(centerX + radius + 10, centerY); // Кончик стрелки
-        ctx.lineTo(centerX + radius - 20, centerY - 10); // Левый угол
-        ctx.lineTo(centerX + radius - 20, centerY + 10); // Правый угол
-        ctx.closePath();
+        ctx.ellipse(0, 0, 12, 18, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(-5, -4, 3, 0, Math.PI * 2);
+        ctx.arc(5, -4, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(-5, -4, 1.5, 0, Math.PI * 2);
+        ctx.arc(5, -4, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
     };
 
-    // Эффект: перерисовка колеса при изменении rotation, segments или loading
     useEffect(() => {
         if (!loading && segments.length > 0) {
-            drawWheel(); // Перерисовываем колесо
+            drawWheel();
         }
-    }, [rotation, segments, loading]); // Зависимости: при их изменении — вызов
+    }, [rotation, segments, loading]);
 
-    // Функция запуска вращения колеса
     const startSpinning = async () => {
-        // Блокировка повторного запуска во время вращения или загрузки
         if (isSpinning || loading) return;
 
-        setIsSpinning(true); // Устанавливаем флаг вращения
-        setResult('');        // Сбрасываем предыдущий результат
-        setError('');         // Сбрасываем ошибку
+        setIsSpinning(true);
+        setResult('');
+        setError('');
+        setShowResultModal(false);
 
         let serverResult;
         let user;
         try {
             user = getCurrentUser();
-            serverResult = await wheelApi.performSpin(user.id); // Запрос к серверу за результатом
+            serverResult = await wheelApi.performSpin(user.id);
 
-            // Извлечение имени приза (если сервер возвращает объект)
             const prizeName = typeof serverResult === 'object' ? serverResult.prizeName : serverResult;
-            console.log('Выигранный приз:', prizeName);
 
-            // Проверка: приз должен быть в списке (защита от несоответствия)
             if (!segments.includes(prizeName)) {
                 throw new Error('Сервер вернул приз, которого нет в списке');
             }
 
-            const winningIndex = segments.indexOf(prizeName); // Индекс выигрышного сектора
-            const anglePerSegment = 360 / segments.length;    // Угол одного сектора
-
-            // Целевой угол: чтобы выигрышный сектор оказался под указателем
-            // Указатель справа → нужен правый край сектора у указателя
+            const winningIndex = segments.indexOf(prizeName);
+            const anglePerSegment = 360 / segments.length;
             const targetAngle = 360 - (winningIndex * anglePerSegment);
-
-            // Добавляем случайное отклонение внутри сектора (чтобы не всегда в центре)
             const deviationAngle = (anglePerSegment - Math.random() * anglePerSegment);
-
-            // Общий угол вращения: минимум оборотов + попадание в сектор
             const totalRotation = spinAngle + targetAngle;
 
-            // Запуск анимации
             const startTimestamp = performance.now();
 
             const animate = (timestamp) => {
-                const elapsed = timestamp - startTimestamp; // Прошло времени
-                const progress = Math.min(elapsed / spinDuration, 1); // Прогресс от 0 до 1
-                const easeOut = 1 - Math.pow(1 - progress, 3); // Плавное замедление в конце
-
-                // Текущий угол поворота с плавным изменением
+                const elapsed = timestamp - startTimestamp;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
                 const currentRotation = (easeOut * totalRotation) - deviationAngle;
 
-                setRotation(currentRotation); // Обновляем состояние
+                setRotation(currentRotation);
 
-                // Продолжаем анимацию, пока не завершится
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    // Анимация завершена
-                    setResult(prizeName);     // Показываем результат
-                    setIsSpinning(false);     // Снимаем флаг вращения
+                    setResult(prizeName);
+                    setIsSpinning(false);
+                    setTimeout(() => {
+                        setShowResultModal(true);
+                    }, 500);
                 }
             };
 
-            requestAnimationFrame(animate); // Запускаем анимационный цикл
+            requestAnimationFrame(animate);
         } catch (err) {
             console.error('Ошибка при вращении:', err);
             setError('Не удалось определить выигрыш. Попробуйте снова.');
@@ -195,34 +191,144 @@ const Wheel = () => {
         }
     };
 
-    // Отображение состояния загрузки
+    const handleAward = () => {
+        console.log('Выдать приз:', result);
+        setShowResultModal(false);
+    };
+
+    const handleCancel = () => {
+        console.log('Отмена выдачи приза:', result);
+        setShowResultModal(false);
+    };
+
     if (loading) {
         return <div className="wheel-container">Загрузка призов...</div>;
     }
 
-    // Отображение ошибки (если не удалось загрузить призы)
     if (error) {
-        return <div className="wheel-container">Ошибка загрузки призов. Используем стандартные.</div>;
+        return <div className="wheel-container error-state">{error}</div>;
     }
 
-    // Основной JSX: отображение колеса, кнопки и результата
     return (
         <div className="wheel-container">
-            {/* Холст для отрисовки колеса */}
-            <canvas
-                ref={canvasRef}
-                width="700"
-                height="700"
-                className="wheel-canvas"
-            />
-            {/* Кнопка запуска вращения */}
-            <button onClick={startSpinning} disabled={isSpinning} className="spin-button">
-                {isSpinning ? 'Крутится...' : 'Крутить!'}
-            </button>
-            {/* Отображение выигрыша */}
-            {result && <p className="result">Вы выиграли: <strong>{result}</strong>!</p>}
-            {/* Отображение ошибки (если была) */}
-            {error && <p className="error">{error}</p>}
+            <div className="wheel-layout">
+                {/* Колесо */}
+                <div className="wheel-section">
+                    <canvas
+                        ref={canvasRef}
+                        width="700"
+                        height="700"
+                        className="wheel-canvas"
+                    />
+
+                    <button
+                        onClick={startSpinning}
+                        disabled={isSpinning}
+                        className="spin-button"
+                        aria-label="Крутить колесо фортуны"
+                    >
+                        {isSpinning ? (
+                            <>
+                                <span className="spinner"></span>
+                                Крутится...
+                            </>
+                        ) : (
+                            '🦉 Крутить колесо!'
+                        )}
+                    </button>
+
+                    {result && !showResultModal && (
+                        <div className="result-preview">
+                            <p>Приз: <strong>{result}</strong></p>
+                        </div>
+                    )}
+
+                    {error && <p className="error-message">{error}</p>}
+                </div>
+
+                {/* Панель справа */}
+                <div className="sidebar-panel">
+                    {/* Список всех призов */}
+                    <div className="prizes-list-panel">
+                        <h3 className="panel-title">🎯 Все призы</h3>
+                        <ul className="prizes-list">
+                            {prizes.length > 0 ? (
+                                prizes.map((prize, index) => (
+                                    <li key={index} className="prize-item">
+                                        <span className="prize-icon">🎁</span>
+                                        <span className="prize-name">{prize}</span>
+                                    </li>
+                                ))
+                            ) : (
+                                <li className="empty-state">Призы не найдены</li>
+                            )}
+                        </ul>
+                    </div>
+
+                    {/* История вращений */}
+                    <div className="history-panel">
+                        <h3 className="panel-title">📜 История вращений</h3>
+                        {historyLoading ? (
+                            <p className="loading-text">Загрузка истории...</p>
+                        ) : spinHistory.length > 0 ? (
+                            <ul className="history-list">
+                                {spinHistory.map((entry, index) => (
+                                    <li key={index} className="history-item">
+                                        <div className="history-prize">{entry.prizeName || 'Неизвестно'}</div>
+                                        <div className="history-date">
+                                            {new Date(entry.timestamp).toLocaleString('ru-RU', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="empty-state">История пуста</p>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Модальное окно с результатом */}
+            {showResultModal && (
+                <div className="prize-modal-overlay" onClick={handleCancel}>
+                    <div className="prize-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>🎉 Поздравляем!</h2>
+                            <button className="modal-close" onClick={handleCancel} aria-label="Закрыть">
+                                ✖
+                            </button>
+                        </div>
+
+                        <div className="modal-body">
+                            <div className="prize-display">
+                                <div className="prize-icon">🎁</div>
+                                <h3 className="prize-name">{result}</h3>
+                                <p className="prize-description">Вы выиграли этот приз в колесе фортуны!</p>
+                            </div>
+                        </div>
+
+                        <div className="modal-footer">
+                            <button
+                                className="btn-cancel"
+                                onClick={handleCancel}
+                            >
+                                ← Отменить
+                            </button>
+                            <button
+                                className="btn-award"
+                                onClick={handleAward}
+                            >
+                                🎯 Выдать приз
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
