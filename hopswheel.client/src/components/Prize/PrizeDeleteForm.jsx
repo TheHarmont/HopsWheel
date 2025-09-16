@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import prizeApi from '../../services/prize.service';
-import "./PrizeDeleteForm.css";
+import cn from "../../styles/Prize/DeleteForm.module.css";
 
 const PrizeDeleteForm = ({ prizeId, onSuccess, onCancel }) => {
     const [loading, setLoading] = useState(false);
@@ -43,9 +43,9 @@ const PrizeDeleteForm = ({ prizeId, onSuccess, onCancel }) => {
 
     if (loading && !prize) {
         return (
-            <div className="prize-modal-overlay">
-                <div className="prize-modal loading">
-                    <div className="spinner"></div>
+            <div className={cn["prize-modal-overlay"]}>
+                <div className={`${cn["prize-modal"]} ${cn["loading"]}`}>
+                    <div className={cn["spinner"]}></div>
                     <p>Загружаем данные приза...</p>
                 </div>
             </div>
@@ -53,69 +53,69 @@ const PrizeDeleteForm = ({ prizeId, onSuccess, onCancel }) => {
     }
 
     return (
-        <div className="prize-modal-overlay" onClick={onCancel}>
-            <div className="prize-modal" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
+        <div className={cn["prize-modal-overlay"]} onClick={onCancel}>
+            <div className={cn["prize-modal"]} onClick={(e) => e.stopPropagation()}>
+                <div className={cn["modal-header"]}>
                     <h3>🦉 Подтвердите удаление приза</h3>
-                    <button className="modal-close" onClick={onCancel} aria-label="Закрыть">
+                    <button className={cn["modal-close"]} onClick={onCancel} aria-label="Закрыть">
                         ✖
                     </button>
                 </div>
 
-                <div className="modal-body">
+                <div className={cn["modal-body"]}>
                     {error && (
-                        <div className="alert-error">
+                        <div className={cn["alert-error"]}>
                             <span>⚠️</span> {error}
                         </div>
                     )}
 
                     {prize ? (
-                        <div className="prize-delete-card">
-                            <div className="prize-field">
-                                <span className="field-label">Название:</span>
-                                <span className="field-value">{prize.name}</span>
+                        <div className={cn["prize-delete-card"]}>
+                            <div className={cn["prize-field"]}>
+                    <span className={cn["field-label"]}>Название:</span>
+                                <span className={cn["field-value"]}>{prize.name}</span>
                             </div>
-                            <div className="prize-field">
-                                <span className="field-label">Шанс выпадения:</span>
-                                <span className="field-value">{prize.weight}/10</span>
+                            <div className={cn["prize-field"]}>
+                                <span className={cn["field-label"]}>Шанс выпадения:</span>
+                                <span className={cn["field-value"]}>{prize.weight}/10</span>
                             </div>
-                            <div className="prize-field">
-                                <span className="field-label">Статус:</span>
-                                <span className={`field-value status ${prize.isActive ? 'active' : 'inactive'}`}>
+                            <div className={cn["prize-field"]}>
+                                <span className={cn["field-label"]}>Статус:</span>
+                                <span className={`${cn["field-value"]} ${cn["status"]} ${prize.isActive ? cn['active'] : cn['inactive']}`}>
                                     {prize.isActive ? '🟢 Активен' : '🔴 Неактивен'}
                                 </span>
                             </div>
                         </div>
                     ) : (
-                        <div className="empty-state">
+                            <div className={cn["empty-state"]}>
                             <p>Приз не найден.</p>
-                            <div className="owl-icon">🦉</div>
+                                <div className={cn["owl-icon"]}>🦉</div>
                         </div>
                     )}
 
-                    <div className="confirm-section">
-                        <p className="confirm-text">
+                    <div className={cn["confirm-section"]}>
+                        <p className={cn["confirm-text"]}>
                             ⚠️ Это действие <strong>нельзя отменить</strong>.<br />
                         </p>
                     </div>
                 </div>
 
-                <div className="modal-footer">
+                <div className={cn["modal-footer"]}>
                     <button
-                        className="btn-cancel"
+                        className={cn["btn-cancel"]}
                         onClick={onCancel}
                         disabled={loading}
                     >
                         ← Вернуться
                     </button>
                     <button
-                        className="btn-delete"
+                        className={cn["btn-delete"]}
                         onClick={handleDelete}
                         disabled={loading}
                     >
                         {loading ? (
                             <>
-                                <div className="spinner small"></div>
+                                <div className={`${cn["spinner"]} ${cn["small"]}`}></div>
                                 Удаление...
                             </>
                         ) : (

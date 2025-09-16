@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import prizeApi from '../../services/prize.service';
-import "./PrizeForm.css";
+import cn from "../../styles/Prize/Form.module.css";
 
 const PrizeCreateForm = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -51,15 +51,15 @@ const PrizeCreateForm = ({ onSuccess }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="prize-form">
-            <h3 className="form-title">➕ Создать приз</h3>
+        <form onSubmit={handleSubmit} className={cn["prize-form"]}>
+            <h3 className={cn["form-title"]}>➕ Создать приз</h3>
             {error && (
-                <div className="form-error">
+                <div className={cn["form-error"]}>
                     <span>⚠️</span> {error}
                 </div>
             )}
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="name">Название</label>
                 <input
                     id="name"
@@ -73,7 +73,7 @@ const PrizeCreateForm = ({ onSuccess }) => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="weight">Шанс падения</label>
                 <input
                     id="weight"
@@ -89,13 +89,13 @@ const PrizeCreateForm = ({ onSuccess }) => {
 
             <button
                 type="submit"
-                className="btn-submit"
+                className={cn["btn-submit"]}
                 disabled={loading}
                 aria-busy={loading}
             >
                 {loading ? (
                     <>
-                        <div className="spinner small"></div>
+                        <div className={cn["spinner small"]}></div>
                         <span>Создание...</span>
                     </>
                 ) : (

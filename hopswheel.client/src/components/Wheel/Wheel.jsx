@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import './Wheel.css';
 import wheelApi from '../../services/wheel.service';
 import { getCurrentUser } from '../../services/auth.service';
+
+import cn from '../../styles/Wheel/Wheel.module.css';
 
 const Wheel = () => {
     const canvasRef = useRef(null);
@@ -202,34 +203,34 @@ const Wheel = () => {
     };
 
     if (loading) {
-        return <div className="wheel-container">Загрузка призов...</div>;
+        return <div className={cn["wheel-container"]}>Загрузка призов...</div>;
     }
 
     if (error) {
-        return <div className="wheel-container error-state">{error}</div>;
+        return <div className={`${cn["wheel-container"]} ${cn["error-state"]}`}>{error}</div>;
     }
 
     return (
-        <div className="wheel-container">
-            <div className="wheel-layout">
+        <div className={cn["wheel-container"]}>
+            <div className={cn["wheel-layout"]}>
                 {/* Колесо */}
-                <div className="wheel-section">
+                <div className={cn["wheel-section"]}>
                     <canvas
                         ref={canvasRef}
                         width="700"
                         height="700"
-                        className="wheel-canvas"
+                        className={cn["wheel-canvas"]}
                     />
 
                     <button
                         onClick={startSpinning}
                         disabled={isSpinning}
-                        className="spin-button"
+                        className={cn["spin-button"]}
                         aria-label="Крутить колесо фортуны"
                     >
                         {isSpinning ? (
                             <>
-                                <span className="spinner"></span>
+                                <span className={cn["spinner"]}></span>
                                 Крутится...
                             </>
                         ) : (
@@ -238,44 +239,44 @@ const Wheel = () => {
                     </button>
 
                     {result && !showResultModal && (
-                        <div className="result-preview">
+                        <div className={cn["result-preview"]}>
                             <p>Приз: <strong>{result}</strong></p>
                         </div>
                     )}
 
-                    {error && <p className="error-message">{error}</p>}
+                    {error && <p className={cn["error-message"]}>{error}</p>}
                 </div>
 
                 {/* Панель справа */}
-                <div className="sidebar-panel">
+                <div className={cn["sidebar-panel"]}>
                     {/* Список всех призов */}
-                    <div className="prizes-list-panel">
-                        <h3 className="panel-title">🎯 Все призы</h3>
-                        <ul className="prizes-list">
+                    <div className={cn["prizes-list-panel"]}>
+                        <h3 className={cn["panel-title"]}>🎯 Все призы</h3>
+                        <ul className={cn["prizes-list"]}>
                             {prizes.length > 0 ? (
                                 prizes.map((prize, index) => (
-                                    <li key={index} className="prize-item">
-                                        <span className="prize-icon">🎁</span>
-                                        <span className="prize-name">{prize}</span>
+                                    <li key={index} className={cn["prize-item"]}>
+                                        <span className={cn["prize-icon"]}>🎁</span>
+                                        <span className={cn["prize-name"]}>{prize}</span>
                                     </li>
                                 ))
                             ) : (
-                                <li className="empty-state">Призы не найдены</li>
+                                <li className={cn["empty-state"]}>Призы не найдены</li>
                             )}
                         </ul>
                     </div>
 
                     {/* История вращений */}
-                    <div className="history-panel">
-                        <h3 className="panel-title">📜 История вращений</h3>
+                    <div className={cn["history-panel"]}>
+                        <h3 className={cn["panel-title"]}>📜 История вращений</h3>
                         {historyLoading ? (
-                            <p className="loading-text">Загрузка истории...</p>
+                            <p className={cn["loading-text"]}>Загрузка истории...</p>
                         ) : spinHistory.length > 0 ? (
-                            <ul className="history-list">
+                            <ul className={cn["history-list"]}>
                                 {spinHistory.map((entry, index) => (
-                                    <li key={index} className="history-item">
-                                        <div className="history-prize">{entry.prizeName || 'Неизвестно'}</div>
-                                        <div className="history-date">
+                                    <li key={index} className={cn["history-item"]}>
+                                        <div className={cn["history-prize"]}>{entry.prizeName || 'Неизвестно'}</div>
+                                        <div className={cn["history-date"]}>
                                             {new Date(entry.timestamp).toLocaleString('ru-RU', {
                                                 day: '2-digit',
                                                 month: '2-digit',
@@ -287,7 +288,7 @@ const Wheel = () => {
                                 ))}
                             </ul>
                         ) : (
-                            <p className="empty-state">История пуста</p>
+                            <p className={cn["empty-state"]}>История пуста</p>
                         )}
                     </div>
                 </div>
@@ -295,32 +296,32 @@ const Wheel = () => {
 
             {/* Модальное окно с результатом */}
             {showResultModal && (
-                <div className="prize-modal-overlay" onClick={handleCancel}>
-                    <div className="prize-modal" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className={cn["prize-modal-overlay"]} onClick={handleCancel}>
+                    <div className={cn["prize-modal"]} onClick={(e) => e.stopPropagation()}>
+                        <div className={cn["modal-header"]}>
                             <h2>🎉 Поздравляем!</h2>
-                            <button className="modal-close" onClick={handleCancel} aria-label="Закрыть">
+                            <button className={cn["modal-close"]} onClick={handleCancel} aria-label="Закрыть">
                                 ✖
                             </button>
                         </div>
 
-                        <div className="modal-body">
-                            <div className="prize-display">
-                                <div className="prize-icon">🎁</div>
-                                <h3 className="prize-name">{result}</h3>
-                                <p className="prize-description">Вы выиграли этот приз в колесе фортуны!</p>
+                        <div className={cn["modal-body"]}>
+                            <div className={cn["prize-display"]}>
+                                <div className={cn["prize-icon"]}>🎁</div>
+                                <h3 className={cn["prize-name"]}>{result}</h3>
+                                <p className={cn["prize-description"]}>Вы выиграли этот приз в колесе фортуны!</p>
                             </div>
                         </div>
 
-                        <div className="modal-footer">
+                        <div className={cn["modal-footer"]}>
                             <button
-                                className="btn-cancel"
+                                className={cn["btn-cancel"]}
                                 onClick={handleCancel}
                             >
                                 ← Отменить
                             </button>
                             <button
-                                className="btn-award"
+                                className={cn["btn-award"]}
                                 onClick={handleAward}
                             >
                                 🎯 Выдать приз

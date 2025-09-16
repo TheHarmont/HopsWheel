@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import userApi from '../../services/user.service';
-import "./UserForm.css";
+import cn from "../../styles/User/Form.module.css";
 
 const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
     const [formData, setFormData] = useState({
@@ -56,10 +56,10 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
             return;
         }
 
-        if (!formData.password.trim()) {
-            setError('Не заполнен пароль');
-            return;
-        }
+        //if (!formData.password.trim()) {
+        //    setError('Не заполнен пароль');
+        //    return;
+        //}
 
         const payload = {
             id: userId,
@@ -82,20 +82,20 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
 
     if (loading) {
         return (
-            <div className="form-loading">
-                <div className="spinner"></div>
+            <div className={cn["form-loading"]}>
+                <div className={cn["spinner"]}></div>
                 <p>Загрузка данных пользователя...</p>
             </div>
         );
     }
 
     return (
-        <form onSubmit={handleSubmit} className="user-form">
-            <div className="form-header-with-cancel">
-                <h3 className="form-title">✏️ Редактировать пользователя</h3>
+        <form onSubmit={handleSubmit} className={cn["user-form"]}>
+            <div className={cn["form-header-with-cancel"]}>
+                <h3 className={cn["form-title"]}>✏️ Редактировать пользователя</h3>
                 <button
                     type="button"
-                    className="btn-cancel"
+                    className={cn["btn-cancel"]}
                     onClick={onCancel}
                     disabled={loading}
                 >
@@ -104,12 +104,12 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
             </div>
 
             {error && (
-                <div className="form-error">
+                <div className={cn["form-error"]}>
                     <span>⚠️</span> {error}
                 </div>
             )}
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="userName">Имя пользователя</label>
                 <input
                     id="userName"
@@ -123,25 +123,25 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="role">Роль</label>
                 <select
                     id="role"
-                    className="custom-select"
+                    className={cn["custom-select"]}
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
                     disabled={loading}
                 >
                     {roles.map((role) => (
-                        <option key={role} value={role}>
+                        <option key={role} value={role} style={{ color: 'black' }}>
                             {role}
                         </option>
                     ))}
                 </select>
             </div>
 
-            <div className="form-group form-checkbox">
+            <div className={`${cn["form-group"]} ${cn["form-checkbox"]}`}>
                 <label>
                     <input
                         type="checkbox"
@@ -156,13 +156,13 @@ const UserUpdateForm = ({ userId, onSuccess, onCancel }) => {
 
             <button
                 type="submit"
-                className="btn-submit"
+                className={cn["btn-submit"]}
                 disabled={loading}
                 aria-busy={loading}
             >
                 {loading ? (
                     <>
-                        <div className="spinner small"></div>
+                        <div className={`${cn["spinner"]} ${cn["small"]}`}></div>
                         <span>Сохранение...</span>
                     </>
                 ) : (

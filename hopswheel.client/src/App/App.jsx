@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from '../pages/LoginPage';
 import WheelPage from '../pages/WheelPage';
-import PrizeListPage from '../pages/PrizeListPage';
-import UserListPage from '../pages/UserListPage';
+import PrizesPage from '../pages/PrizesPage';
+import UsersPage from '../pages/UsersPage';
 import PrivateRoute from '../components/PrivateRoute';
 import Navbar from '../components/Navbar/Navbar';
 
@@ -27,7 +27,7 @@ const App = () => {
                     path="/prizes"
                     element={
                         <PrivateRoute requiredRole={["admin","barmen"]}>
-                            <PrizeListPage />
+                            <PrizesPage />
                         </PrivateRoute>
                     }
                 />
@@ -36,7 +36,7 @@ const App = () => {
                     path="/users"
                     element={
                         <PrivateRoute requiredRole="admin">
-                            <UserListPage />
+                            <UsersPage />
                         </PrivateRoute>
                     }
                 />

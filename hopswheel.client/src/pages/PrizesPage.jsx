@@ -3,9 +3,9 @@ import PrizeUpdateForm from '../components/Prize/PrizeUpdateForm';
 import PrizeCreateForm from '../components/Prize/PrizeCreateForm';
 import PrizeDeleteForm from '../components/Prize/PrizeDeleteForm';
 import PrizeList from '../components/Prize/PrizeList';
-import "./PrizeListPage.css";
+import cn from "../styles/Prize/ListPage.module.css";
 
-function PrizeListPage() {
+function PrizesPage() {
     const [activeTab, setActiveTab] = useState('create'); // create или update
     const [currentPrizeId, setCurrentPrizeId] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
@@ -46,17 +46,17 @@ function PrizeListPage() {
 
 
     return (
-        <div className="prize-management-page">
-            <h1 className="page-title">Управление призами</h1>
+        <div className={cn["prize-management-page"]}>
+            <h1 className={cn["page-title"]}>Управление призами</h1>
 
-            <div className="tabs">
+            <div className={cn["tabs"]}>
                 <button
-                    className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
+                    className={`${cn["tab-btn"]} ${activeTab === 'create' ? cn['active'] : ''}`}
                     onClick={() => setActiveTab('create')}>
                     ➕ Создать
                 </button>
                 <button
-                    className={`tab-btn ${activeTab === 'update' ? 'active' : ''}`}
+                    className={`${cn["tab-btn"]} ${activeTab === 'update' ? cn['active'] : ''}`}
                     onClick={() => setActiveTab('update')}
                     disabled={!currentPrizeId}
                 >
@@ -64,7 +64,7 @@ function PrizeListPage() {
                 </button>
             </div>
 
-            <div className="prize-layout">
+            <div className={cn["prize-layout"]}>
                 {activeTab === 'create' && <PrizeCreateForm onSuccess={handleSuccess}/>}
                 {activeTab === 'update' && currentPrizeId && (
                     <PrizeUpdateForm
@@ -74,9 +74,9 @@ function PrizeListPage() {
                     />
                 )}
                 {activeTab === 'update' && !currentPrizeId && (
-                    <div className="placeholder-message">
+                    <div className={cn["placeholder-message"]}>
                         <p>Выберите приз из списка для редактирования</p>
-                        <div className="owl-icon">🦉</div>
+                        <div className={cn["owl-icon"]}>🦉</div>
                     </div>
                 )}
                 {isDeleteModalOpen && currentPrizeId && (
@@ -87,7 +87,7 @@ function PrizeListPage() {
                     />
                 )}
 
-                <div className="list-column">
+                <div className={cn["list-column"]}>
                     <PrizeList key={refreshKey} onEdit={handleEditPrize} onDelete={handleDeletePrize} />
                 </div>
             </div>
@@ -95,4 +95,4 @@ function PrizeListPage() {
     );
 }
 
-export default PrizeListPage;
+export default PrizesPage;

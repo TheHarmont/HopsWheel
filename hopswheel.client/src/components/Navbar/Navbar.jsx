@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout, getCurrentUser, isAuthenticated } from '../../services/auth.service';
 
-import "./Navbar.css";
+import cn from "../../styles/Navbar/Navbar.module.css";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -22,24 +22,24 @@ const Navbar = () => {
     return (
         <>
             <div
-                className={`navbar-trigger ${isOpen ? 'open' : ''}`}
+                className={`${cn["navbar-trigger"]} ${isOpen ? cn['open'] : ''}`}
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Открыть меню"
             >
                 <span>✦</span>
             </div>
 
-            <nav className={`navbar-panel ${isOpen ? 'open' : ''}`}>
-                <div className="navbar-content">
-                    <h3 className="menu-title">Меню</h3>
-                    <p className="user-greeting">Привет, <strong>{user.username}</strong>!</p>
-                    <ul className="nav-links">
+                <nav className={`${cn["navbar-panel"]} ${isOpen ? cn['open'] : ''}`}>
+                <div className={cn["navbar-content"]}>
+                    <h3 className={cn["menu-title"]}>Меню</h3>
+                    <p className={cn["user-greeting"]}>Привет, <strong>{user.username}</strong>!</p>
+                    <ul className={cn["nav-links"]}>
                         <li><Link to="/" onClick={() => setIsOpen(false)}>Главная</Link></li>
                         <li><Link to="/prizes" onClick={() => setIsOpen(false)}>Настройка призов</Link></li>
                         <li><Link to="/users" onClick={() => setIsOpen(false)}>Список пользователей</Link></li>
                         <li><Link to="/statistics" onClick={() => setIsOpen(false)}>Статистика</Link></li>
                     </ul>
-                    <button onClick={handleLogout} className="logout-btn">
+                    <button onClick={handleLogout} className={cn["logout-btn"]}>
                         Выйти
                     </button>
                 </div>
@@ -47,7 +47,7 @@ const Navbar = () => {
 
             {isOpen && (
                 <div
-                    className="navbar-backdrop"
+                    className={cn["navbar-backdrop"]}
                     onClick={() => setIsOpen(false)}
                     aria-label="Закрыть меню"
                 />

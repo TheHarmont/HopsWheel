@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import prizeApi from '../../services/prize.service';
 import PrizeItem from './PrizeItem';
-import "./PrizeList.css";
+import cn from "../../styles/Prize/List.module.css";
 
 const PrizeList = ({ onEdit , onDelete}) => {
     const [prizes, setPrizes] = useState([]);
@@ -32,36 +32,36 @@ const PrizeList = ({ onEdit , onDelete}) => {
 
     if (loading) {
         return (
-            <div className="list-loading">
-                <div className="spinner"></div>
+            <div className={cn["list-loading"]}>
+                <div className={cn["spinner"]}></div>
                 <p>Загрузка списка призов...</p>
             </div>
         );
     }
 
     return (
-        <div className="prize-list-container">
-            <h2 className="list-title">📋 Список призов</h2>
-            <div className="prize-filter-container">
-                <div className="filter-controls">
+        <div className={cn["prize-list-container"]}>
+            <h2 className={cn["list-title"]}>📋 Список призов</h2>
+            <div className={cn["prize-filter-container"]}>
+                <div className={cn["filter-controls"]}>
                     <input
                         type="text"
                         placeholder="Поиск по названию..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-input"
+                        className={cn["search-input"]}
                     />
                 </div>
             </div>
 
             {filteredPrizes.length === 0 ? (
-                <div className="empty-state">
+                <div className={cn["empty-state"]}>
                     <p>Призы не найдены</p>
-                    <div className="empty-icon">🦉</div>
+                    <div className={cn["empty-icon"]}>🦉</div>
                 </div>
             ) : (
-                <div className="prizes-grid-container">
-                    <div className="prizes-grid">
+                    <div className={cn["prizes-grid-container"]}>
+                        <div className={cn["prizes-grid"]}>
                         {filteredPrizes.map((prize) => (
                             <PrizeItem key={prize.id} prize={prize} onEdit={onEdit} onDelete={onDelete} />
                         ))}

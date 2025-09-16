@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/auth.service';
-import "./Login.css";
+import cn from "../../styles/Auth/Login.module.css";
 
 const Login = () => {
     const barName = "Рыжая Сова";
@@ -22,19 +22,19 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-card">
-                <h1 className="bar-title">🦉 {barName}</h1>
-                <p className="subtitle">Ты знаешь что делать</p>
+        <div className={cn["login-container"]}>
+            <div className={cn["login-card"]}>
+                <h1 className={cn["bar-title"]}>🦉 {barName}</h1>
+                <p className={cn["subtitle"]}>Ты знаешь что делать</p>
 
                 {error && (
-                    <div className="error-alert">
+                    <div className={cn["error-alert"]}>
                         <span>⚠️</span> {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    <div className="input-group">
+                <form onSubmit={handleSubmit} className={cn["login-form"]}>
+                    <div className={cn["input-group"]}>
                         <label htmlFor="username">Логин</label>
                         <input
                             id="username"
@@ -47,7 +47,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <div className="input-group">
+                    <div className={cn["input-group"]}>
                         <label htmlFor="password">Пароль</label>
                         <input
                             id="password"
@@ -60,9 +60,9 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn-login">
+                    <button type="submit" className={cn["btn-login"]}>
                         <span>Войти</span>
-                        <span className="btn-icon">→</span>
+                        <span className={cn["btn-icon"]}>→</span>
                     </button>
                 </form>
             </div>

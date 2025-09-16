@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import prizeApi from '../../services/prize.service';
-import "./PrizeForm.css";
+import cn from "../../styles/Prize/Form.module.css";
 
 const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
     const [formData, setFormData] = useState({
@@ -77,8 +77,8 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
 
         if (loading) {
             return (
-                <div className="form-loading">
-                    <div className="spinner"></div>
+                <div className={cn["form-loading"]}>
+                    <div className={cn["spinner"]}></div>
                     <p>Загрузка данных приза...</p>
                 </div>
             );
@@ -86,12 +86,12 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="prize-form">
-            <div className="form-header-with-cancel">
-                <h3 className="form-title">✏️ Редактировать приз</h3>
+        <form onSubmit={handleSubmit} className={cn["prize-form"]}>
+            <div className={cn["form-header-with-cancel"]}>
+                <h3 className={cn["form-title"]}>✏️ Редактировать приз</h3>
                 <button
                     type="button"
-                    className="btn-cancel"
+                    className={cn["btn-cancel"]}
                     onClick={onCancel}
                     disabled={loading}
                 >
@@ -100,12 +100,12 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
             </div>
 
             {error && (
-                <div className="form-error">
+                <div className={cn["form-error"]}>
                     <span>⚠️</span> {error}
                 </div>
             )}
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="name">Название</label>
                 <input
                     id="name"
@@ -119,7 +119,7 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="weight">Шанс падения</label>
                 <input
                     id="weight"
@@ -133,7 +133,7 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
                 />
             </div>
 
-            <div className="form-group form-checkbox">
+            <div className={`${cn["form-group"]} ${cn["form-checkbox"]}`}>
                 <label>
                     <input
                         type="checkbox"
@@ -148,13 +148,13 @@ const PrizeUpdateForm = ({ prizeId, onSuccess, onCancel }) => {
 
             <button
                 type="submit"
-                className="btn-submit"
+                className={cn["btn-submit"]}
                 disabled={loading}
                 aria-busy={loading}
             >
                 {loading ? (
                     <>
-                        <div className="spinner small"></div>
+                        <div className={`${cn["spinner"]} ${cn["small"]}`}></div>
                         <span>Сохранение...</span>
                     </>
                 ) : (

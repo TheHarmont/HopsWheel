@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import UserCreateForm from '../components/User/UserCreateForm';
 import UserUpdateForm from '../components/User/UserUpdateForm';
 import UserList from '../components/User/UserList';
-import "./UserListPage.css";
+import cn from "../styles/User/ListPage.module.css";
 
-function UserListPage() {
+function UsersPage() {
     const [activeTab, setActiveTab] = useState('create'); // create или update
     const [currentUserId, setCurrentUserId] = useState(null);
     const [refreshKey, setRefreshKey] = useState(0);
@@ -14,6 +14,7 @@ function UserListPage() {
         if (activeTab === 'update') {
             setActiveTab('create'); // после успешного обновления — возвращаемся на создание
         }
+        setCurrentUserId(null);
     };
 
     const handleEditUser = (userId) => {
@@ -27,18 +28,18 @@ function UserListPage() {
     };
 
     return (
-        <div className="user-management-page">
-            <h1 className="page-title">Управление пользователями</h1>
+        <div className={cn["user-management-page"]}>
+            <h1 className={cn["page-title"]}>Управление пользователями</h1>
 
-            <div className="tabs">
+            <div className={cn["tabs"]}>
                 <button
-                    className={`tab-btn ${activeTab === 'create' ? 'active' : ''}`}
+                    className={`${cn["tab-btn"]} ${activeTab === 'create' ? cn['active'] : ''} `}
                     onClick={() => setActiveTab('create')}
                 >
                     ➕ Создать
                 </button>
                 <button
-                    className={`tab-btn ${activeTab === 'update' ? 'active' : ''}`}
+                    className={`${cn["tab-btn"]} ${activeTab === 'update' ? cn['active'] : ''} `}
                     onClick={() => setActiveTab('update')}
                     disabled={!currentUserId}
                 >
@@ -46,7 +47,7 @@ function UserListPage() {
                 </button>
             </div>
 
-            <div className="user-layout">
+            <div className={cn["user-layout"]}>
 
                 {activeTab === 'create' && <UserCreateForm onSuccess={handleSuccess} />}
                 {activeTab === 'update' && currentUserId && (
@@ -57,14 +58,14 @@ function UserListPage() {
                     />
                 )}
                 {activeTab === 'update' && !currentUserId && (
-                    <div className="placeholder-message">
+                    <div className={cn["placeholder-message"]}>
                         <p>Выберите пользователя из списка для редактирования</p>
-                        <div className="owl-icon">🦉</div>
+                        <div className={cn["owl-icon"]}>🦉</div>
                     </div>
                 )}
 
 
-                <div className="list-column">
+                <div className={cn["list-column"]}>
                     <UserList key={refreshKey} onEdit={handleEditUser} />
                 </div>
             </div>
@@ -72,4 +73,4 @@ function UserListPage() {
     );
 }
 
-export default UserListPage;
+export default UsersPage;

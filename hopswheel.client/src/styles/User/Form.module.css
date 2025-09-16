@@ -1,4 +1,4 @@
-.prize-form {
+.user-form {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 16px;
@@ -112,6 +112,35 @@
         transform: none;
     }
 
+.btn-cancel {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+    .btn-cancel:hover {
+        background: rgba(231, 76, 60, 0.3);
+        transform: translateY(-1px);
+    }
+
+        .btn-cancel:hover:not(:disabled) {
+            background: rgba(168, 213, 186, 0.2);
+            transform: translateX(-3px);
+        }
+
+
+    .btn-cancel:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
 /* Спиннеры */
 .spinner {
     width: 24px;
@@ -127,6 +156,13 @@
         height: 18px;
         border-width: 2px;
     }
+
+.form-header-with-cancel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
 
 .form-loading {
     display: flex;
@@ -175,7 +211,7 @@
 
 /* Адаптивность */
 @media (max-width: 600px) {
-    .prize-form {
+    .user-form {
         padding: 20px;
         margin: 15px;
     }

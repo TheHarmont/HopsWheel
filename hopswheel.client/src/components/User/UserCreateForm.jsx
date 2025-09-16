@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import userApi from '../../services/user.service';
-import "./UserForm.css";
+import cn from "../../styles/User/Form.module.css";
 
 const UserCreateForm = ({ onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -67,16 +67,16 @@ const UserCreateForm = ({ onSuccess }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="user-form">
-            <h3 className="form-title">➕ Создать нового пользователя</h3>
+        <form onSubmit={handleSubmit} className={cn["user-form"]}>
+            <h3 className={cn["form-title"]}>➕ Создать нового пользователя</h3>
 
             {error && (
-                <div className="form-error">
+                <div className={cn["form-error"]}>
                     <span>⚠️</span> {error}
                 </div>
             )}
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="userName">Имя пользователя</label>
                 <input
                     id="userName"
@@ -90,7 +90,7 @@ const UserCreateForm = ({ onSuccess }) => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="password">Пароль</label>
                 <input
                     id="password"
@@ -104,18 +104,18 @@ const UserCreateForm = ({ onSuccess }) => {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={cn["form-group"]}>
                 <label htmlFor="role">Роль</label>
                 <select
                     id="role"
-                    className="custom-select"
+                    className={cn["custom-select"]}
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
                     disabled={loading}
                 >
                     {roles.map((role) => (
-                        <option key={role} value={role}>
+                        <option key={role} value={role} style={{color:'black'}}>
                             {role}
                         </option>
                     ))}
@@ -124,13 +124,13 @@ const UserCreateForm = ({ onSuccess }) => {
 
             <button
                 type="submit"
-                className="btn-submit"
+                className={cn["btn-submit"]}
                 disabled={loading}
                 aria-busy={loading}
             >
                 {loading ? (
                     <>
-                        <div className="spinner small"></div>
+                        <div className={`${cn["spinner"]} ${cn["small"]}`}></div>
                         <span>Создание...</span>
                     </>
                 ) : (
