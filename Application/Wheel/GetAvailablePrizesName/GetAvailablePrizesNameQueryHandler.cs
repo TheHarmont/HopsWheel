@@ -12,7 +12,7 @@ internal sealed class GetAvailablePrizesNameQueryHandler(
         var availablePrizes = await prizeRepository.GetAvailablePrizes();
         if (availablePrizes.Count == 0)
         {
-            return Result.Failure<List<string>>(Error.NotFound("Spin.NotFound", "Нет доступных призов"));
+            return Result.Failure<List<string>>(Error.NotFound("Prize.NotFound", "Нет доступных призов"));
         }
 
         var availablePrizesName = availablePrizes.Select(x => x.Name).ToList();
