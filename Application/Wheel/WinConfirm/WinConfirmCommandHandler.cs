@@ -2,7 +2,6 @@
 using Domain.Entities;
 using Domain.Primitives;
 using MediatR;
-using System.Buffers.Text;
 
 namespace Application.Wheel.WinConfirm;
 internal sealed class WinConfirmCommandHandler(ISpinRepository spinRepository) : IRequestHandler<WinConfirmCommand, Result>

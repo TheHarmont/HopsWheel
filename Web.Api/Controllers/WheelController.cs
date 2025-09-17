@@ -1,6 +1,7 @@
 ﻿using Application.Prizes.GetAll;
 using Application.Users.GetAll;
 using Application.Wheel.GetAvailablePrizesName;
+using Application.Wheel.GetSpinHistory;
 using Application.Wheel.GetSpinResult;
 using Application.Wheel.WinConfirm;
 using Domain.Primitives;
@@ -30,6 +31,17 @@ public class WheelController : BaseController
         Result<GetSpinResultQueryDto> result = await Mediator.Send(new GetSpinResultQuery() 
         { 
             UserId = userId 
+        }, ct);
+
+        return result.Match(Results.Ok, CustomResults.Problem);
+    }
+
+    [HttpGet("GetSpinHistory")]
+    public async Task<IResult> GetSpinHistory([FromQuery]int take = 10, CancellationToken ct = default)
+    {
+        Result<List<GetSpinHistoryQueryDto>> result = await Mediator.Send(new GetSpinHistoryQuery()
+        {
+            Take = take
         }, ct);
 
         return result.Match(Results.Ok, CustomResults.Problem);
