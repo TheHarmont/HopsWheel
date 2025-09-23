@@ -3,7 +3,6 @@ using Core.Infrastructure.Repositories;
 using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Infrastructure.Repositories;
 public class SpinRepository(ApplicationDbContext context) : RepositoryBase<Spin, ApplicationDbContext>(context), ISpinRepository

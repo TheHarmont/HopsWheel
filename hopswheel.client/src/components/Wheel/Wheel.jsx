@@ -1,37 +1,63 @@
 import React, { useRef, useEffect, useState } from 'react';
 import wheelApi from '../../services/wheel.service';
 import { getCurrentUser } from '../../services/auth.service';
+import PrizePool from './PrizePool';
 
 import cn from '../../styles/Wheel/Wheel.module.css';
+import SpinHistiry from './SpinHistory';
 
 const Wheel = () => {
     const canvasRef = useRef(null);
     const [isSpinning, setIsSpinning] = useState(false);
     const [rotation, setRotation] = useState(0);
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState({
+        spinId: '',
+        prizeName: ''
+    });
     const [segments, setSegments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showResultModal, setShowResultModal] = useState(false);
 
-    // История и призы
     const [prizes, setPrizes] = useState([]);
-    const [spinHistory, setSpinHistory] = useState([]);
-    const [historyLoading, setHistoryLoading] = useState(true);
 
     const spinDuration = 5000;
     const spinAngle = 3600;
 
     const colors = [
-        '#e67e22', // оранжевый (основной)
-        '#8b4513', // коричневый (седло)
-        '#27ae60', // зелёный (бархат)
-        '#c0392b', // бордовый (вино)
-        '#f39c12', // янтарный
-        '#2c1810', // тёмно-коричневый
-        '#a8d5ba', // мягкий зелёный (мох)
-        '#d35400', // тыквенный
+        '#e67e22',
+        '#8b4513',
+        '#27ae60',
+        '#c0392b',
+        '#f39c12',
+        '#2c1810',
+        '#a8d5ba',
+        '#d35400',
     ];
+
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        if (!showResultModal) return;
+
+        const duration = 5000;
+        const interval = 30;
+        const step = (interval / duration) * 100;
+
+        const timer = setInterval(() => {
+            setProgress(prev => {
+                const next = prev + step;
+                if (next >= 100) {
+                    clearInterval(timer);
+                    handleAward(result.spinId);
+                    return 0;
+                }
+                return next;
+            });
+        }, interval);
+
+        return () => clearInterval(timer);
+    }, [showResultModal, result.spinId]);
 
     useEffect(() => {
         const fetchPrizes = async () => {
@@ -46,17 +72,11 @@ const Wheel = () => {
                 // Получаем полный список призов
                 setPrizes(Array.isArray(availablePrizes) ? availablePrizes : []);
 
-                // Получаем историю
-                //const history = await wheelApi.getSpinHistory();
-                const history = [];
-                setSpinHistory(Array.isArray(history) ? history.slice(0, 10) : []); // последние 10
-
             } catch (err) {
                 console.error('Не удалось загрузить данные:', err);
                 setError('Ошибка загрузки данных');
             } finally {
                 setLoading(false);
-                setHistoryLoading(false);
             }
         };
 
@@ -95,10 +115,10 @@ const Wheel = () => {
             ctx.translate(centerX, centerY);
             ctx.rotate(startAngle + (anglePerSegment * Math.PI / 180) / 2);
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 16px Georgia, serif';
+            ctx.font = 'bold 1.2rem Georgia, serif';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
-            ctx.shadowColor = 'rgba(0,0,0,0.7)';
+            ctx.shadowColor = 'rgba(0,0,0,1)';
             ctx.shadowBlur = 4;
             ctx.fillText(segments[i], radius - 20, 0);
             ctx.restore();
@@ -141,7 +161,10 @@ const Wheel = () => {
         if (isSpinning || loading) return;
 
         setIsSpinning(true);
-        setResult('');
+        setResult({
+            spinId: '',
+            prizeName: ''
+        });
         setError('');
         setShowResultModal(false);
 
@@ -176,7 +199,10 @@ const Wheel = () => {
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    setResult(prizeName);
+                    setResult({
+                        spinId: serverResult.spinId,
+                        prizeName: serverResult.prizeName
+                    });
                     setIsSpinning(false);
                     setTimeout(() => {
                         setShowResultModal(true);
@@ -192,13 +218,12 @@ const Wheel = () => {
         }
     };
 
-    const handleAward = () => {
-        console.log('Выдать приз:', result);
+    const handleAward = async (id) => {
+        await wheelApi.winConfirm(id);
         setShowResultModal(false);
     };
 
     const handleCancel = () => {
-        console.log('Отмена выдачи приза:', result);
         setShowResultModal(false);
     };
 
@@ -213,6 +238,11 @@ const Wheel = () => {
     return (
         <div className={cn["wheel-container"]}>
             <div className={cn["wheel-layout"]}>
+                <div className={cn["sidebar-panel"]}>
+                    {/* История вращений */}
+                    <SpinHistiry />
+                </div>
+
                 {/* Колесо */}
                 <div className={cn["wheel-section"]}>
                     <canvas
@@ -238,77 +268,27 @@ const Wheel = () => {
                         )}
                     </button>
 
-                    {result && !showResultModal && (
-                        <div className={cn["result-preview"]}>
-                            <p>Приз: <strong>{result}</strong></p>
-                        </div>
-                    )}
-
                     {error && <p className={cn["error-message"]}>{error}</p>}
                 </div>
 
-                {/* Панель справа */}
                 <div className={cn["sidebar-panel"]}>
-                    {/* Список всех призов */}
-                    <div className={cn["prizes-list-panel"]}>
-                        <h3 className={cn["panel-title"]}>🎯 Все призы</h3>
-                        <ul className={cn["prizes-list"]}>
-                            {prizes.length > 0 ? (
-                                prizes.map((prize, index) => (
-                                    <li key={index} className={cn["prize-item"]}>
-                                        <span className={cn["prize-icon"]}>🎁</span>
-                                        <span className={cn["prize-name"]}>{prize}</span>
-                                    </li>
-                                ))
-                            ) : (
-                                <li className={cn["empty-state"]}>Призы не найдены</li>
-                            )}
-                        </ul>
-                    </div>
-
-                    {/* История вращений */}
-                    <div className={cn["history-panel"]}>
-                        <h3 className={cn["panel-title"]}>📜 История вращений</h3>
-                        {historyLoading ? (
-                            <p className={cn["loading-text"]}>Загрузка истории...</p>
-                        ) : spinHistory.length > 0 ? (
-                            <ul className={cn["history-list"]}>
-                                {spinHistory.map((entry, index) => (
-                                    <li key={index} className={cn["history-item"]}>
-                                        <div className={cn["history-prize"]}>{entry.prizeName || 'Неизвестно'}</div>
-                                        <div className={cn["history-date"]}>
-                                            {new Date(entry.timestamp).toLocaleString('ru-RU', {
-                                                day: '2-digit',
-                                                month: '2-digit',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className={cn["empty-state"]}>История пуста</p>
-                        )}
-                    </div>
+                    {/* Список призов */}
+                    <PrizePool prizes={prizes} />
                 </div>
             </div>
 
             {/* Модальное окно с результатом */}
             {showResultModal && (
-                <div className={cn["prize-modal-overlay"]} onClick={handleCancel}>
+                <div className={cn["prize-modal-overlay"]}>
                     <div className={cn["prize-modal"]} onClick={(e) => e.stopPropagation()}>
                         <div className={cn["modal-header"]}>
                             <h2>🎉 Поздравляем!</h2>
-                            <button className={cn["modal-close"]} onClick={handleCancel} aria-label="Закрыть">
-                                ✖
-                            </button>
                         </div>
 
                         <div className={cn["modal-body"]}>
                             <div className={cn["prize-display"]}>
                                 <div className={cn["prize-icon"]}>🎁</div>
-                                <h3 className={cn["prize-name"]}>{result}</h3>
+                                <h3 className={cn["prize-name"]}>{result.prizeName}</h3>
                                 <p className={cn["prize-description"]}>Вы выиграли этот приз в колесе фортуны!</p>
                             </div>
                         </div>
@@ -322,9 +302,18 @@ const Wheel = () => {
                             </button>
                             <button
                                 className={cn["btn-award"]}
-                                onClick={handleAward}
+                                onClick={() => handleAward(result.spinId)}
+                                disabled={progress >= 100} // можно отключить после автоклика
+                                style={{ position: 'relative', overflow: 'hidden' }}
                             >
-                                🎯 Выдать приз
+                                {/* Прогресс-бар внутри кнопки */}
+                                <div className={cn["progress"]} style={{
+                                    backgroundColor: `hsl(120, 60%, ${30 + (progress / 100) * 30}%)`,
+                                    cursor: progress >= 100 ? 'not-allowed' : 'pointer'
+                                }}></div>
+                                <span>
+                                    🎯 Выдать приз ({Math.ceil(5 - (progress / 100) * 5)}s)
+                                </span>
                             </button>
                         </div>
                     </div>

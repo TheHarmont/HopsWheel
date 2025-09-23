@@ -12,7 +12,7 @@ internal sealed class GetSpinHistoryQueryHandler(
 
         if (spins.Count == 0)
         {
-            return Result.Failure<List<GetSpinHistoryQueryDto>>(Error.NotFound("Spin.NotFound", "Нет доступных призов"));
+            return Result.Failure<List<GetSpinHistoryQueryDto>>(Error.NotFound("Spin.NotFound", "История пуста"));
         }
 
         var spinHistory = spins.Select(s => new GetSpinHistoryQueryDto()

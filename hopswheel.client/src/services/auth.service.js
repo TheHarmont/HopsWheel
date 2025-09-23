@@ -1,32 +1,7 @@
-import axios from 'axios';
+import axios from '../utils/api-client';
 import { getToken, setToken, removeToken } from '../utils/storage'
 
-const API_URL = 'http://localhost:8000/api/Auth';
 const ROLE_KEY = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
-
-const axiosAuth = axios.create({
-    baseURL: API_URL,
-});
-
-
-const createInstance = (url) => {
-    const instance = axios.create({
-        baseURL: url,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-
-    // Добавляем токен
-    const token = getToken();
-    if (token) {
-        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-        console.error("Не удалось получить токен авторизации");
-    }
-
-    return instance;
-};
 
 const isAuthenticated = () => {
     const token = getToken();
@@ -42,7 +17,7 @@ const isAuthenticated = () => {
 };
 
 const login = (username, password) => {
-    return axiosAuth.post('/Login', { username, password }).then((response) => {
+    return axios.post('/api/auth/login', { username, password }).then((response) => {
         const token = response.data;
         setToken(token);
         return response.data;
@@ -76,6 +51,5 @@ export {
     login,
     logout,
     isAuthenticated,
-    getCurrentUser,
-    createInstance,
+    getCurrentUser
 };

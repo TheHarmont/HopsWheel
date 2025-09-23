@@ -1,35 +1,28 @@
-import { createInstance } from '../services/auth.service';
-
-const API_URL = 'http://localhost:8000/api/Prize';
+import axios from '../utils/api-client';
 
 const prizeService = {
     getAll: async () => {
-        const axios = createInstance(API_URL);
-        const response = await axios.get(`/GetAll`);
+        const response = await axios.get(`api/prize/get-all`);
         return response.data;
     },
 
     getById: async (id) => {
-        const axios = createInstance(API_URL);
-        const response = await axios.get(`/GetById`, {
+        const response = await axios.get(`api/prize/get-by-id`, {
             params: { Id: id },
         });
         return response.data;
     },
 
     create: async (userData) => {
-        const axios = createInstance(API_URL);
-        await axios.post(`/Create`, userData);
+        await axios.post(`api/prize/create`, userData);
     },
 
     update: async (userData) => {
-        const axios = createInstance(API_URL);
-        await axios.put(`/Update`, userData);
+        await axios.put(`api/prize/update`, userData);
     },
 
     delete: async (id) => {
-        const axios = createInstance(API_URL);
-        await axios.delete(`/Delete`, {
+        await axios.delete(`api/prize/delete`, {
             params: { Id: id },
         });
     }
