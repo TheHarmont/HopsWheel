@@ -6,11 +6,11 @@ using Web.Api.Tools;
 
 namespace Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/auth")]
 [ApiController]
 public class AuthController : BaseController
 {
-    [HttpPost("Login")]
+    [HttpPost("login")]
     public async Task<IResult> Login(LoginUserCommand command, CancellationToken ct = default)
     {
         Result<string> result = await Mediator.Send(command, ct);

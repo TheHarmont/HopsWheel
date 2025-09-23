@@ -8,16 +8,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Api.Extensions;
 using Web.Api.Tools;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/prize")]
 [ApiController]
 [Authorize]
 public class PrizeController : BaseController
 {
-    [HttpGet("GetAll")]
+    [HttpGet("get-all")]
     public async Task<IResult> GetAll(CancellationToken ct = default)
     {
         Result<List<GetAllPrizesQueryDto>> result = await Mediator.Send(new GetAllPrizesQuery(), ct);
@@ -25,7 +24,7 @@ public class PrizeController : BaseController
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpGet("GetById")]
+    [HttpGet("get-by-id")]
     public async Task<IResult> GetById(Guid id, CancellationToken ct = default)
     {
         Result<GetByIdPrizeQueryDto> result = await Mediator.Send(new GetByIdPrizeQuery()
@@ -36,7 +35,7 @@ public class PrizeController : BaseController
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpPost("Create")]
+    [HttpPost("create")]
     public async Task<IResult> Create(CreatePrizeCommand command, CancellationToken ct = default)
     {
         Result<Guid> result = await Mediator.Send(command, ct);
@@ -44,7 +43,7 @@ public class PrizeController : BaseController
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpPut("Update")]
+    [HttpPut("update")]
     public async Task<IResult> Update(UpdatePrizeCommand command, CancellationToken ct = default)
     {
         Result result = await Mediator.Send(command, ct);
@@ -52,7 +51,7 @@ public class PrizeController : BaseController
         return result.Match(Results.NoContent, CustomResults.Problem);
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("delete")]
     public async Task<IResult> Delete(Guid id, CancellationToken ct = default)
     {
         Result result = await Mediator.Send(new DeletePrizeCommand()

@@ -12,12 +12,12 @@ using Web.Api.Tools;
 
 namespace Web.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/wheel")]
 [Authorize]
 [ApiController]
 public class WheelController : BaseController
 {
-    [HttpGet("GetAvailablePrizes")]
+    [HttpGet("get-available-prizes")]
     public async Task<IResult> GetAvailablePrizes(CancellationToken ct = default)
     {
         Result<List<string>> result = await Mediator.Send(new GetAvailablePrizesNameQuery(), ct);
@@ -25,7 +25,7 @@ public class WheelController : BaseController
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpGet("PerformSpin")]
+    [HttpGet("spin")]
     public async Task<IResult> PerformSpin(Guid userId, CancellationToken ct = default)
     {
         Result<GetSpinResultQueryDto> result = await Mediator.Send(new GetSpinResultQuery() 
@@ -36,7 +36,7 @@ public class WheelController : BaseController
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpGet("GetSpinHistory")]
+    [HttpGet("get-spin-history")]
     public async Task<IResult> GetSpinHistory([FromQuery]int take = 10, CancellationToken ct = default)
     {
         Result<List<GetSpinHistoryQueryDto>> result = await Mediator.Send(new GetSpinHistoryQuery()
@@ -47,13 +47,10 @@ public class WheelController : BaseController
         return result.Match(Results.Ok, CustomResults.Problem);
     }
 
-    [HttpPost("WinConfirm")]
-    public async Task<IResult> WinConfirm(Guid spinId, CancellationToken ct = default)
+    [HttpPost("win-confirm")]
+    public async Task<IResult> WinConfirm(WinConfirmCommand command, CancellationToken ct = default)
     {
-        Result result = await Mediator.Send(new WinConfirmCommand()
-        {
-            SpinId = spinId
-        }, ct);
+        Result result = await Mediator.Send(command, ct);
 
         return result.Match(Results.NoContent, CustomResults.Problem);
     }
