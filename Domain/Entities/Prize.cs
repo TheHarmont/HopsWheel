@@ -1,0 +1,18 @@
+﻿using Core.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities;
+public sealed class Prize : Entity
+{
+    [Key]
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public int Weight { get; set; } = 1;           // Шанс выпадения (1–10). 10 = часто, 1 = редко
+    public bool IsActive { get; set; } = true;
+    public bool IsDeleted { get; set; } = false;   // Мягкое удаление;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
+}

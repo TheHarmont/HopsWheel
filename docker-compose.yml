@@ -1,0 +1,47 @@
+services:
+  web.api:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: Web.Api/Dockerfile
+    networks:
+      - postgres-network
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=hops-wheel
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - postgres-network
+  
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD_FILE: /pgadmin/password
+      PGADMIN_LISTEN_POR: 80
+    volumes:
+      - ./pgadmin-password.txt:/pgadmin/password:ro
+    ports:
+      - 80:80
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
+# hopswheel.client:
+#   image: client
+#   build:
+#     context: ./hopswheel.client
+#     dockerfile: Dockerfile

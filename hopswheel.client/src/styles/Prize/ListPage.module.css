@@ -1,0 +1,187 @@
+.prize-management-page {
+    padding: 30px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.6s ease;
+}
+
+.page-title {
+    color: #f39c12;
+    font-size: 2.2rem;
+    text-align: center;
+    margin: 0 0 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+/* Вкладки */
+.tabs {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f39c12;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+    .tab-btn:hover:not(:disabled):not(.active) {
+        background: rgba(243, 156, 18, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+        background: rgba(230, 126, 34, 0.25);
+        color: white;
+        border-color: #e67e22;
+        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+    }
+
+    .tab-btn:disabled {
+        color: #7f8c8d;
+        cursor: not-allowed;
+        background: rgba(255, 255, 255, 0.05);
+        transform: none;
+    }
+
+.prize-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.form-column {
+    background: rgba(44, 24, 16, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(230, 126, 34, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.list-column {
+    animation: slideInRight 0.6s ease-out;
+}
+
+.placeholder-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #a8d5ba;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 1.1rem;
+}
+
+.owl-icon {
+    font-size: 3rem;
+    margin-top: 20px;
+    animation: bounce 2s infinite;
+}
+
+.form-header-with-cancel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.btn-cancel {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+    .btn-cancel:hover {
+        background: rgba(231, 76, 60, 0.3);
+        transform: translateY(-1px);
+    }
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@media (max-width: 992px) {
+    .prize-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .form-column,
+    .list-column {
+        animation: fadeIn 0.6s ease;
+    }
+
+    .tabs {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .prize-management-page {
+        padding: 20px 15px;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .tab-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+}
