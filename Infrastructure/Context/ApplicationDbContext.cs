@@ -14,7 +14,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //-> Seed Data
-        modelBuilder.Entity<User>().HasData(new User[] { new("dd987543-6328-4661-b275-57166dede651", "admin", Role.admin, passwordHasher.Hash("admin"))});
+        base.OnModelCreating(modelBuilder);
     }
 }

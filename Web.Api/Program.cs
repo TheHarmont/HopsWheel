@@ -1,4 +1,6 @@
 using Application;
+using Application.Abstractions;
+using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,7 +39,21 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
+
+    await context.Database.EnsureCreatedAsync();
+
+    // Создаем пользователя по умолчанию 
+    if (!await context.Users.AnyAsync(u => u.UserName == "admin"))
+    {
+        context.Users.Add(new(
+            "dd987543-6328-4661-b275-57166dede651",
+            "admin",
+            Role.admin,
+            "3A6A6A7B0770F3915BAB1A43C1EC7A324A94949148018892D37085BD4B2C06DC-E34B645352DB461675CCBBD82303D2E8")
+            );
+
+        await context.SaveChangesAsync();
+    }
 }
 
 app.Run();

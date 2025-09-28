@@ -63,18 +63,14 @@ const Wheel = () => {
         const fetchPrizes = async () => {
             try {
                 const availablePrizes = await wheelApi.getAvailablePrizes();
-                if (Array.isArray(availablePrizes) && availablePrizes.length > 0) {
-                    setSegments(availablePrizes);
-                } else {
-                    throw new Error('Некорректные данные призов');
-                }
 
                 // Получаем полный список призов
-                setPrizes(Array.isArray(availablePrizes) ? availablePrizes : []);
+                setSegments(availablePrizes);
+                setPrizes(availablePrizes);
 
             } catch (err) {
                 console.error('Не удалось загрузить данные:', err);
-                setError('Ошибка загрузки данных');
+                setError('Ошибка загрузки данных: ' + err.response.data.detail);
             } finally {
                 setLoading(false);
             }
@@ -133,21 +129,17 @@ const Wheel = () => {
         ctx.fill();
 
         ctx.save();
-        ctx.translate(centerX + radius + 10, centerY);
+        ctx.translate(centerX + radius + 20, centerY);
+        ctx.beginPath();
+        ctx.moveTo(-40, 0);      // ← ОСТРИЁ (самая левая точка, смотрит влево!)
+        ctx.lineTo(40, -25);      // верхний правый угол хвоста
+        ctx.lineTo(40, 25);       // нижний правый угол хвоста
+        ctx.closePath();
         ctx.fillStyle = '#e67e22';
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 12, 18, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = '#6b4226';
+        ctx.lineWidth = 3;
         ctx.fill();
-        ctx.fillStyle = '#fff';
-        ctx.beginPath();
-        ctx.arc(-5, -4, 3, 0, Math.PI * 2);
-        ctx.arc(5, -4, 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#000';
-        ctx.beginPath();
-        ctx.arc(-5, -4, 1.5, 0, Math.PI * 2);
-        ctx.arc(5, -4, 1.5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.stroke();
         ctx.restore();
     };
 
@@ -239,7 +231,6 @@ const Wheel = () => {
         <div className={cn["wheel-container"]}>
             <div className={cn["wheel-layout"]}>
                 <div className={cn["sidebar-panel"]}>
-                    {/* История вращений */}
                     <SpinHistiry />
                 </div>
 
@@ -272,12 +263,11 @@ const Wheel = () => {
                 </div>
 
                 <div className={cn["sidebar-panel"]}>
-                    {/* Список призов */}
                     <PrizePool prizes={prizes} />
                 </div>
             </div>
 
-            {/* Модальное окно с результатом */}
+            {/* Модальное окно*/}
             {showResultModal && (
                 <div className={cn["prize-modal-overlay"]}>
                     <div className={cn["prize-modal"]} onClick={(e) => e.stopPropagation()}>
@@ -289,7 +279,7 @@ const Wheel = () => {
                             <div className={cn["prize-display"]}>
                                 <div className={cn["prize-icon"]}>🎁</div>
                                 <h3 className={cn["prize-name"]}>{result.prizeName}</h3>
-                                <p className={cn["prize-description"]}>Вы выиграли этот приз в колесе фортуны!</p>
+                                <p className={cn["prize-description"]}>Вы выиграли этот приз!</p>
                             </div>
                         </div>
 
@@ -303,14 +293,9 @@ const Wheel = () => {
                             <button
                                 className={cn["btn-award"]}
                                 onClick={() => handleAward(result.spinId)}
-                                disabled={progress >= 100} // можно отключить после автоклика
+                                disabled={progress >= 100}
                                 style={{ position: 'relative', overflow: 'hidden' }}
                             >
-                                {/* Прогресс-бар внутри кнопки */}
-                                <div className={cn["progress"]} style={{
-                                    backgroundColor: `hsl(120, 60%, ${30 + (progress / 100) * 30}%)`,
-                                    cursor: progress >= 100 ? 'not-allowed' : 'pointer'
-                                }}></div>
                                 <span>
                                     🎯 Выдать приз ({Math.ceil(5 - (progress / 100) * 5)}s)
                                 </span>

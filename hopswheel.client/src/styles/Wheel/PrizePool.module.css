@@ -1,33 +1,53 @@
-.prizes-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 300px;
-    overflow-y: auto;
+.prizes-list-panel {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+}
+
+.prizes-list-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.prizes-list-scroll {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    animation: scrollPrizes 40s linear infinite;
+}
+
+    .prizes-list-scroll:hover {
+        animation-play-state: paused;
+    }
+
+@keyframes scrollPrizes {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(calc(-50%));
+    }
 }
 
 .prize-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    border-left: 4px solid #e67e22;
-    transition: all 0.2s ease;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+    font-size: 30px;
 }
 
-    .prize-item:hover {
-        background: rgba(230, 126, 34, 0.1);
-        transform: translateX(5px);
-    }
-
 .prize-icon {
-    font-size: 1.2rem;
+    margin-right: 8px;
+    font-size: 1.1em;
 }
 
 .prize-name {
-    font-weight: 500;
-    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

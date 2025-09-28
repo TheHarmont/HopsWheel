@@ -2,7 +2,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 300px;
+    height: 70vh;
     overflow-y: auto;
 }
 
@@ -11,16 +11,22 @@
     margin-bottom: 10px;
     background: rgba(168, 213, 186, 0.1);
     border-radius: 10px;
-    border-left: 4px solid #a8d5ba;
+    border-left: 4px solid #e67e22;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.95rem;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 1s ease, transform 1s ease;
 }
+    .history-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
 .history-prize {
-    font-weight: bold;
-    color: #f39c12;
+    font-size: 15px;
 }
 
 .history-date {

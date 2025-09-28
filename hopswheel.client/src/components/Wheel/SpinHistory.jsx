@@ -1,54 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import wheelApi from '../../services/wheel.service';
+import HistoryItem from './HistoryItem';
 
 import cn from '../../styles/Wheel/SpinHistory.module.css';
 
-const SpinHistiry = () => {
+
+const SpinHistory = () => {
     const [spinHistory, setSpinHistory] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchPrizes = async () => {
-            try {
-                // Получаем историю
-                const history = await wheelApi.getSpinHistory();
-                setSpinHistory(Array.isArray(history) ? history : []);
+        let intervalId;
 
+        const fetchLatestPrizes = async () => {
+            try {
+                const latestHistory = await wheelApi.getSpinHistory(10);
+                if (!Array.isArray(latestHistory)) return;
+
+                const current = spinHistory;
+                const newEntries = latestHistory.filter(
+                    newEntry => !current.some(oldEntry => oldEntry.id === newEntry.id)
+                );
+
+                if (newEntries.length > 0) {
+                    const updated = [...newEntries, ...current].slice(0, 10);
+                    setSpinHistory(updated);
+                }
             } catch (err) {
-                console.error('Не удалось загрузить историю', err);
-            } finally {
-                setLoading(false);
+                console.error('Ошибка при обновлении истории:', err);
             }
         };
 
-        fetchPrizes();
-    }, []);
+        fetchLatestPrizes();
+        intervalId = setInterval(fetchLatestPrizes, 10_000);
 
-    if (loading) {
-        return <div className={cn["wheel-container"]}>Загрузка призов...</div>;
-    }
+        return () => clearInterval(intervalId);
+    }, [spinHistory]);
 
     return (
         <div className={cn["sidebar-panel"]}>
-            {/* История вращений */}
             <div className={cn["history-panel"]}>
                 <h3 className={cn["panel-title"]}>📜 История вращений</h3>
-                {loading ? (
-                    <p className={cn["loading-text"]}>Загрузка истории...</p>
-                ) : spinHistory.length > 0 ? (
-                    <ul className={cn["history-list"]}>
-                        {spinHistory.map((entry, index) => (
-                            <li key={index} className={cn["history-item"]}>
-                                <div className={cn["history-prize"]}>{entry.prizeName || 'Неизвестно'}</div>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p className={cn["empty-state"]}>История пуста</p>
-                )}
+                <ul className={cn["history-list"]}>
+                    {spinHistory.map((spin) => (
+                        <HistoryItem key={spin.id} entry={spin} />
+                    ))}
+                </ul>
             </div>
         </div>
     );
-}
+};
 
-export default SpinHistiry;
+export default SpinHistory;
