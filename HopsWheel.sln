@@ -25,13 +25,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "hopswheel.server\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api", "hopswheel.server\Web.Api\Web.Api.csproj", "{4C28F038-40E3-4983-B391-CFC204309D7F}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CF88D850-6687-40EF-BABA-4641342E5535}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corePackages", "corePackages", "{AF91E897-1A73-415E-BF65-30F09F9BD0DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hopsWheel", "hopsWheel", "{A74D3AAF-00E2-48F4-89D0-1F7DCF5B5A67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure", "hopswheel.server\Core.Infrastructure\Core.Infrastructure.csproj", "{2E20F80E-4C55-497B-8B34-206E7C696B14}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9E743145-FA79-4F32-A912-4B86BFA27980}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,14 +61,14 @@ Global
 		{4C28F038-40E3-4983-B391-CFC204309D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C28F038-40E3-4983-B391-CFC204309D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C28F038-40E3-4983-B391-CFC204309D7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF88D850-6687-40EF-BABA-4641342E5535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF88D850-6687-40EF-BABA-4641342E5535}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF88D850-6687-40EF-BABA-4641342E5535}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF88D850-6687-40EF-BABA-4641342E5535}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E20F80E-4C55-497B-8B34-206E7C696B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E20F80E-4C55-497B-8B34-206E7C696B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E20F80E-4C55-497B-8B34-206E7C696B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E20F80E-4C55-497B-8B34-206E7C696B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E743145-FA79-4F32-A912-4B86BFA27980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E743145-FA79-4F32-A912-4B86BFA27980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E743145-FA79-4F32-A912-4B86BFA27980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E743145-FA79-4F32-A912-4B86BFA27980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

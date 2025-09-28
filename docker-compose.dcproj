@@ -4,10 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>cf88d850-6687-40ef-baba-4641342e5535</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>web.api</DockerServiceName>
+    <ProjectGuid>9e743145-fa79-4f32-a912-4b86bfa27980</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />
