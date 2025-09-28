@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import cn from '../../styles/Wheel/Prizepool.module.css';
+import cn from '../../styles/Wheel/PrizePool.module.css';
 
 const PrizePool = ({ prizes }) => {
     // Если призов мало — просто покажем их без анимации

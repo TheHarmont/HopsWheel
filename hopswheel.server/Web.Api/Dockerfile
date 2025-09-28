@@ -15,9 +15,12 @@ COPY ["Directory.Packages.props", "."]
 COPY ["Web.Api/Web.Api.csproj", "Web.Api/"]
 COPY ["Application/Application.csproj", "Application/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Core.Infrastructure/Core.Infrastructure.csproj", "Core.Infrastructure/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 RUN dotnet restore "./Web.Api/Web.Api.csproj"
+
 COPY . .
+
 WORKDIR "/src/Web.Api"
 RUN dotnet build "./Web.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

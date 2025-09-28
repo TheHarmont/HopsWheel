@@ -1,30 +1,95 @@
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/azds.yaml
-**/bin
-**/charts
-**/docker-compose*
-**/Dockerfile*
-**/node_modules
-**/npm-debug.log
-**/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
-LICENSE
-README.md
-!**/.gitignore
-!.git/HEAD
-!.git/config
-!.git/packed-refs
-!.git/refs/heads/**
+# Version control
+.git/
+.gitignore
+.hg/
+.svn/
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime*
+*.code-workspace
+
+# Build outputs and development artifacts
+bin/
+obj/
+dist/
+build/
+out/
+tmp/
+temp/
+*.tmp
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+
+# Python (for completeness, even if not detected)
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+
+# Go
+/vendor/
+*.test
+.go-cache/
+
+# Java
+*.class
+.gradle/
+target/
+
+# Test files and debug logs
+test/
+tests/
+*.log
+debug/
+
+# Environment and secrets
+.env*
+*.env
+*.pem
+*.key
+*.crt
+config.local.*
+*.local.yml
+.local/
+local/
+
+# Documentation and markdown
+README*
+*.md
+docs/
+
+# Docker files (do not include Dockerfile for build context)
+Dockerfile*
+docker-compose*
+
+# Project-specific and temporary files
+*.vsidx
+*.suo
+*.dtbcache.v2
+*.futdcache.v2
+*.backup.json
+*.user
+*.esproj
+*.csproj.user
+*.slnLaunch.user
+
+# Container/database artifacts
+.containers/
+
+# Miscellaneous
+*.conf
+*.init
+
+# Exclude lock files from ignore (explicitly not ignored)
+!package-lock.json
+
+# Exclude .dockerignore itself
+!.dockerignore

@@ -7,7 +7,7 @@ import path from 'path';
 import child_process from 'child_process';
 import { env } from 'process';
 
-const target = 'http://localhost:8000';
+const target = 'http://server:8000';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,6 +24,7 @@ export default defineConfig({
                 secure: false
             }
         },
+        host: true,
         port: 5000,
     }
 })

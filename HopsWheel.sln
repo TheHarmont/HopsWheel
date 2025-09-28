@@ -13,17 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{20C77AF4-3AE7-4882-9501-5D54E6B012CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "hopswheel.server\Application\Application.csproj", "{20C77AF4-3AE7-4882-9501-5D54E6B012CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{F04F02F0-5927-407A-9980-F70B8513F357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "hopswheel.server\Infrastructure\Infrastructure.csproj", "{F04F02F0-5927-407A-9980-F70B8513F357}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{7ADEA735-8994-4AD6-A2B7-2524D9E0F086}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{88F80ADA-9FF0-4FC6-B5E6-CE13F3C15A2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{94A7125E-2CE4-44D3-BA82-CA5DD3E7318C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "hopswheel.server\Domain\Domain.csproj", "{94A7125E-2CE4-44D3-BA82-CA5DD3E7318C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api", "Web.Api\Web.Api.csproj", "{4C28F038-40E3-4983-B391-CFC204309D7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api", "hopswheel.server\Web.Api\Web.Api.csproj", "{4C28F038-40E3-4983-B391-CFC204309D7F}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CF88D850-6687-40EF-BABA-4641342E5535}"
 EndProject
@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "corePackages", "corePackage
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hopsWheel", "hopsWheel", "{A74D3AAF-00E2-48F4-89D0-1F7DCF5B5A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure", "Core.Infrastructure\Core.Infrastructure.csproj", "{2E20F80E-4C55-497B-8B34-206E7C696B14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure", "hopswheel.server\Core.Infrastructure\Core.Infrastructure.csproj", "{2E20F80E-4C55-497B-8B34-206E7C696B14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
