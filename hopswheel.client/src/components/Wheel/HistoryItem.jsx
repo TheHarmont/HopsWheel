@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import cn from '../../styles/Wheel/SpinHistory.module.css';
 
-const HistoryItem = ({ spin }) => {
+const HistoryItem = ({ entry }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const HistoryItem = ({ spin }) => {
         <li
             className={`${cn["history-item"]} ${isVisible ? cn["visible"] : ''}`}
         >
-            <div className={cn["history-prize"]}>{spin.prizeName || 'Неизвестно'}</div>
+            <div className={cn["history-prize"]}>{entry.prizeName || 'Неизвестно'}</div>
         </li>
     );
 };
